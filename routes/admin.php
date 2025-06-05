@@ -1,11 +1,15 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect()->route('home');
-})->name('home');
+// Route::get('/', function () {
+//     return redirect()->route('home');
+// })->name('home');
 
-Route::get('/category', function () {
-    return "Hello Category";
-})->name('category');
+// Route::get('/category', function () {
+//     return "Hello Category";
+// })->name('category');
+
+
+Route::resource('categories', CategoryController::class);

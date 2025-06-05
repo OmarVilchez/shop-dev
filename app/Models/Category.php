@@ -10,6 +10,7 @@ class Category extends Model
     /** @use HasFactory<\Database\Factories\CategoryFactory> */
     use HasFactory;
 
+    //habilitamos asignacion masiva para los campos
     protected $fillable = [
         'name',
         'title',
