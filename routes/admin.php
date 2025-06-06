@@ -7,9 +7,20 @@ use Illuminate\Support\Facades\Route;
 //     return redirect()->route('home');
 // })->name('home');
 
-// Route::get('/category', function () {
-//     return "Hello Category";
-// })->name('category');
 
 
-Route::resource('categories', CategoryController::class);
+
+// Route::get('/', function () {
+//     return redirect()->route('home');
+// })->middleware('can:home');
+
+
+// Route::view('dashboard', 'dashboard')
+//     ->middleware('can:home');
+
+Route::view('dashboard', 'dashboard')
+    ->middleware('can:home')
+    ->name('dashboard');
+
+
+Route::resource('categories', CategoryController::class)->middleware('can:listar categorias');

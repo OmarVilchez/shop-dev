@@ -1,8 +1,8 @@
-<x-layouts.app>
+<x-layouts.admin>
 
 
     <flux:breadcrumbs class="mb-4">
-        <flux:breadcrumbs.item :href="route('dashboard')">
+        <flux:breadcrumbs.item :href="route('admin.dashboard')">
             {{ __('Dashboard') }}
         </flux:breadcrumbs.item>
         <flux:breadcrumbs.item :href="route('admin.categories.index')">
@@ -50,4 +50,4 @@
 </div>
 
 
-</x-layouts.app>
+</x-layouts.admin>
