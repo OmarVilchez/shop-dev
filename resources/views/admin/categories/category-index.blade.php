@@ -1,6 +1,6 @@
 <x-layouts.admin>
 
-
+{{--
     <flux:breadcrumbs class="mb-4">
         <flux:breadcrumbs.item :href="route('admin.dashboard')">
             {{ __('Dashboard') }}
@@ -47,7 +47,7 @@
             @endforeach
         </tbody>
     </table>
-</div>
+</div> --}}
 
 
 </x-layouts.admin>

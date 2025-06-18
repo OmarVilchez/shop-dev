@@ -4,14 +4,14 @@
             [
                 'name' => 'Dashboard',
                 'icon' => 'home',
-                'url' => route('admin.dashboard'),
-                'current' => request()->routeIs('admin.dashboard'),
+                'url' => route('manager.dashboard'),
+                'current' => request()->routeIs('manager.dashboard'),
             ],
             [
                 'name' => 'Categorias',
                 'icon' => 'funnel',
-                'url' => route('admin.categories.index'),
-                'current' => request()->routeIs('admin.categories.*'),
+                'url' => route('manager.catalog.categories.index'),
+                'current' => request()->routeIs('manager.catelog.categories.*'),
             ],
         ],
     ];
@@ -38,10 +38,10 @@
 </head>
 
 <body class="min-h-screen bg-white dark:bg-zinc-800">
-    <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+    <flux:sidebar sticky stashable class="w-56 border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
-        <a href="{{ route('admin.dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
+        <a href="{{ route('manager.dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
             <x-app-logo />
         </a>
 

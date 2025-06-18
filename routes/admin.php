@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Livewire\Admin\Categories\CategoryManager;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -18,9 +19,9 @@ use Illuminate\Support\Facades\Route;
 // Route::view('dashboard', 'dashboard')
 //     ->middleware('can:home');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware('can:home')
-    ->name('dashboard');
 
+// INICIO
+Route::view('dashboard', 'dashboard')->middleware('can:home')->name('dashboard');
 
-Route::resource('categories', CategoryController::class)->middleware('can:listar categorias');
+// CATALOGOS
+Route::get('catalog/categories', CategoryManager::class)->middleware('can:listar categorias')->name('catalog.categories.index');

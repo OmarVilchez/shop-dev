@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
         then: function () {
             Route::middleware('web', 'auth')
                 ->prefix('manager')
-                ->name('admin.')
+                ->name('manager.')
                 ->group(base_path('routes/admin.php'));
         }
     )

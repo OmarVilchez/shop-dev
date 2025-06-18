@@ -1,12 +1,11 @@
-
 @php
-$links = [
-[
-'name' => 'Home',
-'icon' => 'layout-grid',
-'url' => route('home'),
-'current' => request()->routeIs('home'),
-],
+    $links = [
+    [
+        'name' => 'Home',
+        'icon' => 'layout-grid',
+        'url' => route('home'),
+        'current' => request()->routeIs('home'),
+    ],
 ];
 @endphp
 
@@ -35,22 +34,24 @@ $links = [
     <flux:header container class="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
         <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
-        <a href="{{ route('home') }}" class="ms-2 me-5 flex items-center space-x-2 rtl:space-x-reverse lg:ms-0"
-            wire:navigate>
-            <x-app-logo />
-        </a>
+        <div class="flex w-full items-center justify-between">
 
-        <flux:navbar class="-mb-px max-lg:hidden">
-            {{-- <flux:navbar.item icon="layout-grid" :href="route('dashboard')"
-                :current="request()->routeIs('dashboard')" wire:navigate>
-                {{ __('Dashboard') }}
-            </flux:navbar.item> --}}
-            @foreach ($links as $link)
-            <flux:navbar.item :icon="$link['icon']" :href="$link['url']" :current="$link['current']" wire:navigate>
-                {{ __($link['name']) }}
-            </flux:navbar.item>
-            @endforeach
-        </flux:navbar>
+
+            <flux:navbar class="-mb-px max-lg:hidden">
+                @foreach ($links as $link)
+                <flux:navbar.item :icon="$link['icon']" :href="$link['url']" :current="$link['current']" wire:navigate>
+                    {{ __($link['name']) }}
+                </flux:navbar.item>
+                @endforeach
+            </flux:navbar>
+
+
+            <a href="{{ route('home') }}" class="ms-2 me-5 flex items-center space-x-2 rtl:space-x-reverse lg:ms-0"
+                wire:navigate>
+                <x-app-logo />
+            </a>
+
+        </div>
 
         <flux:spacer />
 
@@ -81,6 +82,16 @@ $links = [
 
                 <flux:menu.separator />
 
+                @if(auth()->check() && auth()->user()->roles()->count() > 0)
+                    <flux:menu.radio.group>
+                        <flux:menu.item :href="route('manager.dashboard')" icon="home" wire:navigate>
+                            {{ __('Manager Dashboard') }}
+                        </flux:menu.item>
+                    </flux:menu.radio.group>
+
+                    <flux:menu.separator />
+                @endif
+
                 <flux:menu.radio.group>
                     <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}
                     </flux:menu.item>
@@ -97,12 +108,9 @@ $links = [
             </flux:menu>
         </flux:dropdown>
         @else
-
         <flux:dropdown position="top" align="end">
-            <flux:button class="cursor-pointer" icon="user" />
-
+            <flux:button class="cursor-pointer" icon="user" aria-label="{{ __('User menu') }}" />
             <flux:menu>
-
                 <flux:menu.radio.group>
                     <flux:menu.item :href="route('login')" wire:navigate>
                         {{ __('Login') }}
@@ -113,12 +121,14 @@ $links = [
                     </flux:menu.item>
 
                 </flux:menu.radio.group>
-
-
             </flux:menu>
         </flux:dropdown>
         @endauth
+
     </flux:header>
+
+
+
 
     <!-- Mobile Menu -->
     <flux:sidebar stashable sticky
