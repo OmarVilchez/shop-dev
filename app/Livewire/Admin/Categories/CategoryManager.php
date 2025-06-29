@@ -16,6 +16,7 @@ class CategoryManager extends Component
 
     public $categories = [];
     public $category_id;
+    public $parent_id = null; // Asumiendo que no se usa en este contexto, pero se deja por si acaso
     public $name = '';
     public $title = '';
     public $description = '';
@@ -73,10 +74,10 @@ class CategoryManager extends Component
         $this->categories = $query->orderBy('position')->get();
     }
 
-    public function openModal($id = null)
+    public function openModal($id = null,  $parent_id = null)
     {
         $this->resetValidation();
-        $this->reset(['category_id', 'name', 'title', 'description', 'meta_title', 'meta_description', 'keywords', 'position', 'active', 'image_desktop', 'image_desktop_upload']);
+        $this->reset(['category_id', 'name', 'title', 'description', 'meta_title', 'meta_description', 'keywords', 'position', 'active', 'image_desktop', 'image_desktop_upload', 'parent_id']);
 
         if ($id) {
             $category = Category::findOrFail($id);
@@ -89,8 +90,11 @@ class CategoryManager extends Component
             $this->keywords = $category->keywords;
             $this->position = $category->position;
             $this->active = (bool) $category->active; // <-- Esto es clave
-            /* $this->active = $category->active; */
             $this->image_desktop = $category->image_desktop;
+            $this->parent_id = $category->parent_id;
+        } elseif ($parent_id) {
+            $this->parent_id = $parent_id; // Para nueva subcategoría
+            $this->position = Category::max('position') + 1 ?? 1;
         } else {
             $this->position = Category::max('position') + 1 ?? 1;
         }
@@ -117,6 +121,11 @@ class CategoryManager extends Component
             $imagePath = $this->image_desktop_upload->storeAs('categorias', $filename, 'public');
         }
 
+        // Solución al problema del select vacío
+        if ($this->parent_id === '' || $this->parent_id === 0) {
+            $this->parent_id = null;
+        }
+
         Category::updateOrCreate(
             ['id' => $this->category_id],
             [
@@ -128,6 +137,7 @@ class CategoryManager extends Component
                 'meta_description' => $this->meta_description,
                 'keywords' => $this->keywords,
                 'image_desktop' => $imagePath,
+                'parent_id' => $this->parent_id,
                 'position' => $this->position,
                 'active' => $this->active,
             ]

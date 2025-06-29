@@ -8,12 +8,19 @@
         </flux:breadcrumbs.item>
     </flux:breadcrumbs>
 
-    <div class="p-4 sm:p-6">
+    <div class="p-0 sm:p-6">
         <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2">
             <h1 class="text-xl sm:text-2xl font-bold dark:text-white">Categorías</h1>
-            <button wire:click="openModal"
+         {{--    <button wire:click="openModal"
                 class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full sm:w-auto">+ Nueva
-                Categoría</button>
+                Categoría</button> --}}
+
+            {{--     <flux:button wire:click="openModal" color="success" class="w-full sm:w-auto">
+                    Nueva Categoría
+                </flux:button> --}}
+
+                <flux:button wire:click="openModal" variant="primary" color="green">Nueva Categoría</flux:button>
+
         </div>
 
         <input type="text" wire:model.live="search" placeholder="Buscar..."
@@ -24,6 +31,7 @@
                 <thead class="bg-gray-100 text-xs uppercase text-gray-700 dark:bg-zinc-800 dark:text-gray-300">
                     <tr>
                         <th class="px-2 sm:px-4 py-2 cursor-pointer whitespace-nowrap" wire:click="sortBy('id')">ID</th>
+                        <th class="px-2 sm:px-4 py-2 whitespace-nowrap">Tipo</th>
                         <th class="px-2 sm:px-4 py-2 cursor-pointer whitespace-nowrap" wire:click="sortBy('name')">
                             Nombre</th>
                         <th class="px-2 sm:px-4 py-2 cursor-pointer whitespace-nowrap" wire:click="sortBy('title')">
@@ -37,9 +45,17 @@
                     @foreach($categories as $category)
                     <tr class="border-t dark:border-zinc-700">
                         <td class="px-2 sm:px-4 py-2">{{ $category->id }}</td>
-                        <td class="px-2 sm:px-4 py-2">{{ $category->name }}</td>
-                        <td class="px-2 sm:px-4 py-2">{{ $category->title }}</td>
-                        <td class="px-2 sm:px-4 py-2">{{ Str::limit($category->description, 50) }}</td>
+
+                        <td class="">
+                           @if($category->parent_id)
+                            <span class="px-2 sm:px-4 py-2 rounded bg-purple-100 text-purple-800 text-sm font-medium">Subcategoría</span>
+                            @else
+                            <span class="px-2 sm:px-4 py-2 rounded bg-blue-100 text-blue-800 text-sm font-medium">Categoría</span>
+                            @endif
+                        </td>
+                        <td class="px-2 sm:px-4 py-2 whitespace-nowrap ">{{ $category->name }}</td>
+                        <td class="px-2 sm:px-4 py-2 whitespace-nowrap">{{ $category->title }}</td>
+                        <td class="px-2 sm:px-4 py-2 whitespace-nowrap">{{ Str::limit($category->description, 50) }}</td>
                         <td class="px-2 sm:px-4 py-2">
                             <div class="flex items-center gap-2">
                                 <button wire:click="toggleActive({{ $category->id }})"
@@ -56,7 +72,8 @@
                                 </span>
                             </div>
                         </td>
-                        <td class="px-2 sm:px-4 py-2 space-x-2">
+
+                        <td {{-- class="px-2 sm:px-4 py-2 space-x-2" --}} class="px-2 sm:px-4 py-2 flex flex-row whitescape-nowrap space-x-2">
                             @if($category->active)
                             <a href="#" target="_blank"
                                 class="inline-flex items-center p-1 rounded hover:bg-green-100 dark:hover:bg-green-900"
@@ -185,6 +202,45 @@
                                     @enderror
                                 </div>
                             </div>
+
+                            <div>
+                               {{--  <flux:label for="category_id">Categoría padre</flux:label>
+                                <select id="category_id" wire:model.defer="category_id"
+                                    class="w-full border rounded px-3 py-2 dark:bg-zinc-800 dark:text-white dark:border-zinc-700">
+                                    <option value="">Sin categoría padre</option>
+                                    @foreach($categories as $cat)
+                                    @if(!$category_id || $cat->id != $category_id)
+                                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                    @endif
+                                    @endforeach
+                                </select> --}}
+
+
+
+                               {{--  <select id="parent_id" wire:model.defer="parent_id"
+                                    class="w-full border rounded px-3 py-2 dark:bg-zinc-800 dark:text-white dark:border-zinc-700">
+                                    <option value="">Sin categoría padre</option>
+                                    @foreach($categories->where('parent_id', null) as $cat)
+                                        @if(!$category_id || $cat->id != $category_id)
+                                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select> --}}
+
+                                <flux:label for="parent_id">Categoría padre</flux:label>
+
+                                <flux:select id="parent_id" wire:model.defer="parent_id" class="w-full">
+                                    <option value="">Sin categoría padre</option>
+                                    @foreach($categories->where('parent_id', null) as $cat)
+                                    @if(!$category_id || $cat->id != $category_id) {{-- Evita ser su propio padre --}}
+                                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                    @endif
+                                    @endforeach
+                                </flux:select>
+
+                            </div>
+
+
                             <div>
                                 <flux:label for="active">Estado</flux:label>
                                 <flux:checkbox wire:model.defer="active" id="active" :label="__('Active')" />
