@@ -169,7 +169,7 @@ $links = [
 
 {{--     {{ $slot }} --}}
 
-    @fluxScripts
+   {{--  @fluxScripts --}}
 </body>
 
 </html>

@@ -13,9 +13,13 @@ export default defineConfig({
         tailwindcss(),
     ],
     server: {
-        // cors: true,
+        //cors: true,
         host: 'shop-dev.test', // <- tu dominio local personalizado
         port: 5173,            // <- el puerto por defecto de Vite
-        https: false           // <- si no usas HTTPS localmente
+        https: false,           // <- si no usas HTTPS localmente
+        origin: 'http://shop-dev.test:5173', // <- 👈 clave para evitar errores de origen
+        cors: true,
     },
 });
+
+

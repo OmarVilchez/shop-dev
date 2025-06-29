@@ -300,5 +300,9 @@
     "Category ID must be a number.": "El ID de la categoría debe ser un número.",
     "Category name must be at least 3 characters long.": "El nombre de la categoría debe tener al menos 3 caracteres.",
     "Category name must not exceed 255 characters.": "El nombre de la categoría no debe exceder los 255 caracteres.",
-    "Category description must not exceed 500 characters.": "La descripción de la categoría no debe exceder los 500 caracteres."
+    "Category description must not exceed 500 characters.": "La descripción de la categoría no debe exceder los 500 caracteres.",
+    "Active" : "Activo",
+    "Inactive" : "Inactivo",
+    "Status" : "Estado"
+
 }
