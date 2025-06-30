@@ -8,31 +8,43 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
-
+use Livewire\WithPagination;
+use App\Helpers\Flash;
 
 class CategoryManager extends Component
 {
-     use WithFileUploads;
+    use WithFileUploads;
+    use WithPagination;
 
-    public $categories = [];
+
+    // Propiedades para el modal
     public $category_id;
-    public $parent_id = null; // Asumiendo que no se usa en este contexto, pero se deja por si acaso
     public $name = '';
     public $title = '';
     public $description = '';
     public $meta_title = '';
     public $meta_description = '';
     public $keywords = '';
-    public $position = 1;
-    public $active = false;
+    public $icon = '';
+    public $icon_upload;
     public $image_desktop;
     public $image_desktop_upload;
+    public $image_mobile;
+    public $image_mobile_upload;
+    public $position = 1;
+    public $active = false;
+    public $parent_id = null; // Asumiendo que no se usa en este contexto, pero se deja por si acaso
+
+    // Propiedades para la búsqueda y ordenación
     public $search = '';
     public $sortField = '';
     public $sortDirection = '';
+    public $filterActive = '';
+    public $filterType = '';
+
+    // Propiedades para el modal
     public $showModal = false;
     public $showModalOpen = false;
-
     public string $tab = 'info'; // valor por defecto al abrir el modal
 
 
@@ -54,25 +66,6 @@ class CategoryManager extends Component
         'image_desktop_upload.required' => 'La imagen es obligatoria.',
     ];
 
-    public function updatedSearch()
-    {
-        $this->loadCategories();
-    }
-
-    public function loadCategories()
-    {
-        $query = Category::query();
-
-        if ($this->search) {
-            $query->where('name', 'like', "%{$this->search}%");
-        }
-
-        if ($this->sortField) {
-            $query->orderBy($this->sortField, $this->sortDirection);
-        }
-
-        $this->categories = $query->orderBy('position')->get();
-    }
 
     public function openModal($id = null,  $parent_id = null)
     {
@@ -101,7 +94,6 @@ class CategoryManager extends Component
 
         $this->showModal = true;
     }
-
 
     public function save()
     {
@@ -145,17 +137,20 @@ class CategoryManager extends Component
 
         $this->reset('image_desktop_upload');
         $this->showModal = false;
-        $this->loadCategories();
-        $this->dispatch('show-alert', title: '¡Guardado!', message: 'Categoría registrada correctamente');
-    }
 
+        Flash::success('Categoría guardada exitosamente');
+        //return redirect()->route('manager.catalog.categories.index');
+
+       // $this->dispatch('show-alert', title: '¡Guardado!', message: 'Categoría registrada');
+
+    }
 
     public function delete($id)
     {
         $category = Category::findOrFail($id);
         if (Auth::user()->can('eliminar categorias')) {
             // $category->stockKeepingUnits()->count() == 0 ? $category->forceDelete() : $category->delete();
-            $this->loadCategories();
+           // $this->loadCategories();
             $this->dispatch('show-alert', title: 'Eliminado', message: 'Categoría eliminada');
         }
     }
@@ -165,7 +160,7 @@ class CategoryManager extends Component
         $category = Category::findOrFail($id);
         $category->active = !$category->active;
         $category->save();
-        $this->loadCategories();
+        //$this->loadCategories();
     }
 
     public function sortBy($field)
@@ -175,29 +170,77 @@ class CategoryManager extends Component
             : 'asc';
 
         $this->sortField = $field;
-        $this->loadCategories();
+      //  $this->loadCategories();
     }
+
+
+
+    public function updatedFilterActive()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedFilterType()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedsearch()
+    {
+        $this->resetPage();
+    }
+
+
 
     public function render()
     {
-        $this->loadCategories();
-        return view('livewire.admin.categories.category-manager')->layout('components.layouts.admin');
-
-        /*    $categoriesQuery = Category::query();
+        $categoriesQuery = Category::query();
 
         if (!empty($this->search)) {
             $categoriesQuery = $categoriesQuery->where('name', 'like', '%' . $this->search . '%');
+        }
+
+        if ($this->filterActive !== ''){
+            $categoriesQuery = $categoriesQuery->where('active', $this->filterActive);
+        }
+
+        if ($this->filterType === 'categoria') {
+            $categoriesQuery->whereNull('parent_id');
+        } elseif ($this->filterType === 'subcategoria') {
+            $categoriesQuery->whereNotNull('parent_id');
         }
 
         if (!empty($this->sortField)) {
             $categoriesQuery = $categoriesQuery->orderBy($this->sortField, $this->sortDirection);
         }
 
-        $categories = $categoriesQuery->orderBy('position')->get();
+        // $categories = $categoriesQuery->orderBy('position')->get();
+        $categories = $categoriesQuery->paginate(10);
 
-
-        return view('livewire.admin.categories.category-manager', ['categories' => $categories])->layout('components.layouts.admin');*/
+        return view('livewire.admin.categories.category-manager', ['categories' => $categories])->layout('components.layouts.admin');
     }
+
+
+    /*  public function updatedSearch()
+    {
+        $this->loadCategories();
+    } */
+
+    /*   public function loadCategories()
+    {
+        $query = Category::query();
+
+        if ($this->search) {
+            $query->where('name', 'like', "%{$this->search}%");
+        }
+
+        if ($this->sortField) {
+            $query->orderBy($this->sortField, $this->sortDirection);
+        }
+
+        $this->categories = $query->orderBy('position')->get();
+    } */
+
 
 
     /* use WithFileUploads;
@@ -437,6 +480,4 @@ class CategoryManager extends Component
 
         return view('livewire.admin.categories.category-manager', ['categories' => $categories])->layout('components.layouts.admin');
     } */
-
-
 }

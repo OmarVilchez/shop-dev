@@ -8,23 +8,288 @@
         </flux:breadcrumbs.item>
     </flux:breadcrumbs>
 
-    <div class="p-0 sm:p-6">
-        <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2">
-            <h1 class="text-xl sm:text-2xl font-bold dark:text-white">Categorías</h1>
-         {{--    <button wire:click="openModal"
-                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full sm:w-auto">+ Nueva
-                Categoría</button> --}}
+    <div class="p-0 sm:p-6 space-y-6">
 
-            {{--     <flux:button wire:click="openModal" color="success" class="w-full sm:w-auto">
-                    Nueva Categoría
-                </flux:button> --}}
+        <!-- Título y botón -->
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <h1 class="text-2xl font-bold tracking-tight text-balance text-gray-800 dark:text-white">Categorías</h1>
+            <flux:button wire:click="openModal" variant="primary" color="green" class="rounded-xl shadow-sm">Nueva Categoría
+            </flux:button>
+        </div>
 
-                <flux:button wire:click="openModal" variant="primary" color="green">Nueva Categoría</flux:button>
+        <!-- Filtros -->
+        <div class="flex flex-col sm:flex-row gap-3">
+            <flux:input type="text" wire:model.live="search" placeholder="Buscar..." class="w-full {{-- sm:max-w-xs --}}" />
+
+            <flux:select wire:model.live="filterType" class="w-full sm:max-w-xs">
+                <option value="">Tipos de Categoría</option>
+                <option value="categoria">Solo categorías</option>
+                <option value="subcategoria">Solo subcategorías</option>
+            </flux:select>
+
+            <flux:select id="filterActive" wire:model.live="filterActive" class="w-full sm:max-w-xs">
+                <option value="">Todos los estados</option>
+                <option value="1">Activos</option>
+                <option value="0">Inactivos</option>
+            </flux:select>
 
         </div>
 
-        <input type="text" wire:model.live="search" placeholder="Buscar..."
-            class="border px-4 py-2 rounded w-full mb-4 dark:bg-zinc-800 dark:text-white dark:border-zinc-700" />
+        <!-- Tabla -->
+        <div class="overflow-x-auto rounded-xl shadow-sm ring-1 ring-gray-200 dark:ring-zinc-700 bg-white dark:bg-zinc-900">
+            <table class="min-w-full text-sm text-left text-gray-600 dark:text-gray-300">
+                <thead class="bg-gray-100 dark:bg-zinc-800 text-xs uppercase">
+                    <tr class="text-gray-700 dark:text-gray-300">
+                        <th class="px-4 py-3 cursor-pointer" wire:click="sortBy('id')">ID</th>
+                        <th class="px-4 py-3">Tipo</th>
+                        <th class="px-4 py-3 cursor-pointer" wire:click="sortBy('name')">Nombre</th>
+                        <th class="px-4 py-3 cursor-pointer" wire:click="sortBy('title')">Título</th>
+                        <th class="px-4 py-3">Descripción</th>
+                        <th class="px-4 py-3">Estado</th>
+                        <th class="px-4 py-3">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-zinc-800">
+                    @foreach($categories as $category)
+                    <tr class="hover:bg-gray-50 dark:hover:bg-zinc-800/40 transition">
+                        <td class="px-4 py-2">{{ $category->id }}</td>
+
+                        <!-- Tipo -->
+                        <td class="px-4 py-2">
+                            <span
+                                class="px-2 py-1 text-xs font-medium rounded-full
+                                    {{ $category->parent_id ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' }}">
+                                {{ $category->parent_id ? 'Subcategoría' : 'Categoría' }}
+                            </span>
+                        </td>
+
+                        <td class="px-4 py-2 whitespace-nowrap font-medium">{{ $category->name }}</td>
+                        <td class="px-4 py-2 truncate max-w-[200px]">{{ Str::limit($category->title, 40) }}</td>
+                        <td class="px-4 py-2 truncate max-w-[160px]">{{ Str::limit($category->description, 30) }}</td>
+
+                        <!-- Estado switch -->
+                        <td class="px-4 py-2">
+                            <div class="flex items-center gap-2">
+                                <button wire:click="toggleActive({{ $category->id }})" class="relative inline-flex items-center h-6 w-11 rounded-full transition-colors focus:outline-none
+                                            {{ $category->active ? 'bg-green-600' : 'bg-gray-300 dark:bg-zinc-600' }}">
+                                    <span class="inline-block w-5 h-5 transform bg-white rounded-full shadow transition
+                                            {{ $category->active ? 'translate-x-5' : 'translate-x-1' }}"></span>
+                                </button>
+                                <span
+                                    class="text-xs font-medium {{ $category->active ? 'text-green-600' : 'text-gray-500 dark:text-gray-400' }}">
+                                    {{ $category->active ? 'Activo' : 'Inactivo' }}
+                                </span>
+                            </div>
+                        </td>
+
+                        <!-- Acciones -->
+                        <td class="px-4 py-2 flex flex-row items-center gap-2">
+                            @if($category->active)
+                            <a href="#" target="_blank" class="p-1.5 rounded hover:bg-green-100 dark:hover:bg-green-900"
+                                title="Ver en tienda">
+                                <flux:icon name="globe-alt" class="w-5 h-5 text-green-600 dark:text-green-400" />
+                            </a>
+                            @else
+                            <span class="p-1.5 rounded opacity-50 cursor-not-allowed bg-gray-100 dark:bg-zinc-800"
+                                title="Solo si está activa">
+                                <flux:icon name="globe-alt" class="w-5 h-5 text-gray-400 dark:text-gray-600" />
+                            </span>
+                            @endif
+
+                            <button wire:click="openModal({{ $category->id }})"
+                                class="p-1.5 rounded hover:bg-blue-100 dark:hover:bg-blue-900" title="Editar">
+                                <flux:icon name="pencil" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                            </button>
+
+                            <button wire:click="delete({{ $category->id }})"
+                                class="p-1.5 rounded hover:bg-red-100 dark:hover:bg-red-900" title="Eliminar">
+                                <flux:icon name="trash" class="w-5 h-5 text-red-600 dark:text-red-400" />
+                            </button>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            {{ $categories->links()}}
+        </div>
+
+    </div>
+
+    <flux:modal wire:model="showModal" class="z-50">
+        <div
+            class="sm:px-2 sm:py-6 w-[85vw] sm:w-[90vw] max-w-md  mx-auto">
+
+            <!-- Título -->
+
+
+            <h2 class="text-lg sm:text-xl font-semibold mb-4 dark:text-white">
+                {{ $category_id ? 'Editar Categoría' : 'Nueva Categoría' }}
+            </h2>
+
+            <!-- Tabs -->
+            <div x-data="{ tab: 'info' }" class="space-y-4">
+                <div class="flex space-x-2 border-b dark:border-zinc-700 pb-2">
+                    <button type="button" @click="tab = 'info'" :class="tab === 'info'
+                            ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                            : 'bg-transparent text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800'"
+                        class="px-4 py-2 rounded-full text-sm font-medium transition-all">Información</button>
+
+                    <button type="button" @click="tab = 'seo'" :class="tab === 'seo'
+                            ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                            : 'bg-transparent text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800'"
+                        class="px-4 py-2 rounded-full text-sm font-medium transition-all">SEO</button>
+                </div>
+
+                <form wire:submit.prevent="save" class="space-y-6">
+
+                    <!-- Panel Información -->
+                    <div x-show="tab === 'info'" x-transition class="space-y-5">
+
+                        <div>
+                            <flux:label for="name">Nombre</flux:label>
+                            <flux:input id="name" wire:model.defer="name" />
+                            @error('name') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div>
+                            <flux:label for="title">Título</flux:label>
+                            <flux:input id="title" wire:model.defer="title" />
+                            @error('title') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div>
+                            <flux:label for="description">Descripción</flux:label>
+                            <flux:textarea id="description" wire:model.defer="description" />
+                            @error('description') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Subida de imagen -->
+                        <div>
+                            <flux:label>Imagen Desktop</flux:label>
+                            <div
+                                class="border-2 border-dashed rounded-xl p-4 bg-gray-50 dark:bg-zinc-800 border-gray-300 dark:border-zinc-700 flex flex-col items-center justify-center space-y-2">
+                                @if($image_desktop)
+                                <div class="relative group">
+                                    <img src="{{ Storage::url($image_desktop) }}"
+                                        class="w-40 h-40 object-cover rounded-lg shadow" />
+                                    <button type="button" wire:click="$set('image_desktop', null)"
+                                        class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full p-1 shadow transition-opacity opacity-80 group-hover:opacity-100"
+                                        title="Eliminar imagen">
+                                        <flux:icon name="x-mark" class="w-4 h-4" />
+                                    </button>
+                                </div>
+                                @elseif($image_desktop_upload)
+                                <div class="relative group">
+                                    <img src="{{ $image_desktop_upload->temporaryUrl() }}"
+                                        class="w-40 h-40 object-cover rounded-lg shadow" />
+                                    <button type="button" wire:click="$set('image_desktop_upload', null)"
+                                        class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full p-1 shadow transition-opacity opacity-80 group-hover:opacity-100"
+                                        title="Eliminar imagen">
+                                        <flux:icon name="x-mark" class="w-4 h-4" />
+                                    </button>
+                                </div>
+                                @else
+                                <label for="image_desktop_upload" class="flex flex-col items-center cursor-pointer">
+                                    <div class="flex flex-col items-center justify-center">
+                                      {{--   <svg class="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 48 48">
+                                            <path
+                                                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            </path>
+                                        </svg> --}}
+                                        <flux:icon name="cloud-arrow-up" class="w-10 h-10 text-gray-400 mb-2" />
+                                        <span class="text-sm text-gray-600 dark:text-gray-300">Haz clic para subir
+                                            una imagen</span>
+                                        <span class="text-xs text-gray-400 mt-1">PNG, JPG, JPEG hasta 1MB</span>
+                                        <span class="text-xs text-gray-400">800x800px mínimo</span>
+                                    </div>
+                                    <input id="image_desktop_upload" type="file" wire:model="image_desktop_upload" class="hidden" accept="image/*">
+                                </label>
+                                @endif
+                                @error('image_desktop_upload') <span class="text-red-600 text-xs mt-2">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Select categoría padre -->
+                        <div>
+                            <flux:label for="parent_id">Categoría padre</flux:label>
+                            <flux:select id="parent_id" wire:model.defer="parent_id">
+                                <option value="">Sin categoría padre</option>
+                                @foreach($categories->where('parent_id', null) as $cat)
+                                @if(!$category_id || $cat->id != $category_id)
+                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                @endif
+                                @endforeach
+                            </flux:select>
+                        </div>
+
+                        <div>
+                            <flux:label for="active">Estado</flux:label>
+                            <flux:checkbox wire:model.defer="active" id="active" :label="__('Activo')" />
+                        </div>
+                    </div>
+
+                    <!-- Panel SEO -->
+                    <div x-show="tab === 'seo'" x-cloak x-transition class="space-y-5">
+                        <div>
+                            <flux:label for="meta_title">Meta título</flux:label>
+                            <flux:input id="meta_title" wire:model.defer="meta_title" />
+                        </div>
+
+                        <div>
+                            <flux:label for="meta_description">Meta descripción</flux:label>
+                            <flux:textarea id="meta_description" wire:model.defer="meta_description" />
+                        </div>
+
+                        <div>
+                            <flux:label for="keywords">Keywords</flux:label>
+                            <flux:textarea id="keywords" wire:model.defer="keywords" />
+                        </div>
+                    </div>
+
+                    <!-- Acciones -->
+                    <div class="flex justify-end gap-3 pt-4 border-t dark:border-zinc-700">
+                        <flux:button type="button" color="zinc" wire:click="$set('showModal', false)">
+                            Cancelar
+                        </flux:button>
+                        <flux:button type="submit" variant="primary">
+                            Guardar
+                        </flux:button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </flux:modal>
+
+    @include('components.flash-messages')
+
+</div>
+
+   {{--  <div class="p-0 sm:p-6">
+
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2">
+            <h1 class="text-xl sm:text-2xl font-bold dark:text-white">Categorías</h1>
+            <flux:button wire:click="openModal" variant="primary" color="green">Nueva Categoría</flux:button>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-2 mb-4">
+            <flux:input type="text" wire:model.live="search" placeholder="Buscar..." />
+
+            <flux:select id="filterActive" wire:model.live="filterActive">
+                <option value="">Todos los estados</option>
+                <option value="1">Activos</option>
+                <option value="0">Inactivos</option>
+            </flux:select>
+            <flux:select wire:model.live="filterType">
+                <option value="">Todos</option>
+                <option value="categoria">Solo categorías</option>
+                <option value="subcategoria">Solo subcategorías</option>
+            </flux:select>
+        </div>
 
         <div class="overflow-x-auto rounded shadow-sm">
             <table class="min-w-full text-sm text-left text-gray-600 dark:text-gray-200">
@@ -47,15 +312,18 @@
                         <td class="px-2 sm:px-4 py-2">{{ $category->id }}</td>
 
                         <td class="">
-                           @if($category->parent_id)
-                            <span class="px-2 sm:px-4 py-2 rounded bg-purple-100 text-purple-800 text-sm font-medium">Subcategoría</span>
+                            @if($category->parent_id)
+                            <span
+                                class="px-2 sm:px-4 py-2 rounded bg-purple-100 text-purple-800 text-sm font-medium">Subcategoría</span>
                             @else
-                            <span class="px-2 sm:px-4 py-2 rounded bg-blue-100 text-blue-800 text-sm font-medium">Categoría</span>
+                            <span
+                                class="px-2 sm:px-4 py-2 rounded bg-blue-100 text-blue-800 text-sm font-medium">Categoría</span>
                             @endif
                         </td>
                         <td class="px-2 sm:px-4 py-2 whitespace-nowrap ">{{ $category->name }}</td>
-                        <td class="px-2 sm:px-4 py-2 whitespace-nowrap">{{ $category->title }}</td>
-                        <td class="px-2 sm:px-4 py-2 whitespace-nowrap">{{ Str::limit($category->description, 50) }}</td>
+                        <td class="px-2 sm:px-4 py-2 whitespace-nowrap">{{ Str::limit($category->title, 40) }}</td>
+                        <td class="px-2 sm:px-4 py-2 whitespace-nowrap">{{ Str::limit($category->description, 30) }}
+                        </td>
                         <td class="px-2 sm:px-4 py-2">
                             <div class="flex items-center gap-2">
                                 <button wire:click="toggleActive({{ $category->id }})"
@@ -73,7 +341,7 @@
                             </div>
                         </td>
 
-                        <td {{-- class="px-2 sm:px-4 py-2 space-x-2" --}} class="px-2 sm:px-4 py-2 flex flex-row whitescape-nowrap space-x-2">
+                        <td class="px-2 sm:px-4 py-2 flex flex-row whitescape-nowrap space-x-2">
                             @if($category->active)
                             <a href="#" target="_blank"
                                 class="inline-flex items-center p-1 rounded hover:bg-green-100 dark:hover:bg-green-900"
@@ -103,10 +371,10 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </div> --}}
 
-    <flux:modal wire:model="showModal" class="z-50">
-        <div class=" sm:px-2 sm:py-6 w-[85vw] sm:w-[95vw] max-w-lg  mx-auto">
+   {{--  <flux:modal wire:model="showModal" class="z-50">
+        <div class=" sm:px-2 sm:py-6 w-[85vw] sm:w-[98vw] max-w-lg  mx-auto">
             <h2 class="text-lg sm:text-xl font-semibold mb-4 dark:text-white">
                 {{ $category_id ? 'Editar Categoría' : 'Nueva Categoría' }}
             </h2>
@@ -121,10 +389,11 @@
                         @click="tab = 'seo'" type="button">SEO</button>
                 </div>
 
-                <div class="relative min-h-[420px] max-h-[80vh] overflow-y-auto space-y-4 transition-all">
+                <div class="relative min-h-[420px] max-h-[80vh]  space-y-4 transition-all">
                     <form wire:submit.prevent="save" class="space-y-4">
                         <!-- Panel Información  x-transition -->
                         <div x-show="tab === 'info'" class="flex flex-col gap-y-4 w-[98%] mx-auto">
+
                             <div>
                                 <flux:label for="name">Nombre</flux:label>
                                 <flux:input id="name" wire:model.defer="name" />
@@ -161,7 +430,6 @@
                                             </svg>
                                         </button>
                                     </div>
-                                    {{-- <p class="text-xs text-gray-500 mt-2">Imagen actual</p> --}}
                                     @elseif($image_desktop_upload)
                                     <div class="relative group">
                                         <img src="{{ $image_desktop_upload->temporaryUrl() }}"
@@ -176,7 +444,6 @@
                                             </svg>
                                         </button>
                                     </div>
-                                    {{-- <p class="text-xs text-gray-500 mt-2">Previsualización</p> --}}
                                     @else
                                     <label for="image_desktop_upload" class="flex flex-col items-center cursor-pointer">
                                         <div class="flex flex-col items-center justify-center">
@@ -196,7 +463,6 @@
                                             class="hidden" accept="image/*">
                                     </label>
                                     @endif
-
                                     @error('image_desktop_upload')
                                     <span class="text-red-600 text-xs mt-2">{{ $message }}</span>
                                     @enderror
@@ -204,42 +470,17 @@
                             </div>
 
                             <div>
-                               {{--  <flux:label for="category_id">Categoría padre</flux:label>
-                                <select id="category_id" wire:model.defer="category_id"
-                                    class="w-full border rounded px-3 py-2 dark:bg-zinc-800 dark:text-white dark:border-zinc-700">
-                                    <option value="">Sin categoría padre</option>
-                                    @foreach($categories as $cat)
-                                    @if(!$category_id || $cat->id != $category_id)
-                                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                                    @endif
-                                    @endforeach
-                                </select> --}}
-
-
-
-                               {{--  <select id="parent_id" wire:model.defer="parent_id"
-                                    class="w-full border rounded px-3 py-2 dark:bg-zinc-800 dark:text-white dark:border-zinc-700">
-                                    <option value="">Sin categoría padre</option>
-                                    @foreach($categories->where('parent_id', null) as $cat)
-                                        @if(!$category_id || $cat->id != $category_id)
-                                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                                        @endif
-                                    @endforeach
-                                </select> --}}
-
                                 <flux:label for="parent_id">Categoría padre</flux:label>
 
                                 <flux:select id="parent_id" wire:model.defer="parent_id" class="w-full">
                                     <option value="">Sin categoría padre</option>
                                     @foreach($categories->where('parent_id', null) as $cat)
-                                    @if(!$category_id || $cat->id != $category_id) {{-- Evita ser su propio padre --}}
+                                    @if(!$category_id || $cat->id != $category_id)
                                     <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                     @endif
                                     @endforeach
                                 </flux:select>
-
                             </div>
-
 
                             <div>
                                 <flux:label for="active">Estado</flux:label>
@@ -276,10 +517,7 @@
                 </div>
             </div>
         </div>
-    </flux:modal>
-
-</div>
-
+    </flux:modal> --}}
 
 
 
