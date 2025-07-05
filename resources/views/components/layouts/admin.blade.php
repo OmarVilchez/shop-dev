@@ -126,6 +126,10 @@ $groups = [
 
         <flux:spacer />
 
+        <flux:button as="a" href="{{ url('/') }}" color="primary" class="ml-2">
+            Ir a la web
+        </flux:button>
+
         {{-- <flux:dropdown position="top" align="end">
             <flux:profile :initials="auth()->user()->initials()" icon-trailing="chevron-down" />
 

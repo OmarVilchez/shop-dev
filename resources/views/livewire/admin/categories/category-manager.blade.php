@@ -173,8 +173,11 @@
                                 class="border-2 border-dashed rounded-xl p-4 bg-gray-50 dark:bg-zinc-800 border-gray-300 dark:border-zinc-700 flex flex-col items-center justify-center space-y-2">
                                 @if($image_desktop)
                                 <div class="relative group">
-                                    <img src="{{ Storage::url($image_desktop) }}"
-                                        class="w-40 h-40 object-cover rounded-lg shadow" />
+                                   {{--  <img src="{{ Storage::url($image_desktop) }}"
+                                        class="w-40 h-40 object-cover rounded-lg shadow" /> --}}
+
+                                    <img src="{{ Str::startsWith($image_desktop, 'http') ? $image_desktop : Storage::url($image_desktop) }}" class="w-40 h-40 object-cover rounded-lg shadow" />
+
                                     <button type="button" wire:click="$set('image_desktop', null)"
                                         class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full p-1 shadow transition-opacity opacity-80 group-hover:opacity-100"
                                         title="Eliminar imagen">
@@ -194,12 +197,6 @@
                                 @else
                                 <label for="image_desktop_upload" class="flex flex-col items-center cursor-pointer">
                                     <div class="flex flex-col items-center justify-center">
-                                      {{--   <svg class="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 48 48">
-                                            <path
-                                                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            </path>
-                                        </svg> --}}
                                         <flux:icon name="cloud-arrow-up" class="w-10 h-10 text-gray-400 mb-2" />
                                         <span class="text-sm text-gray-600 dark:text-gray-300">Haz clic para subir
                                             una imagen</span>

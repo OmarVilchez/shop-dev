@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use App\Helpers\Flash;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+
 
 class CategoryManager extends Component
 {
@@ -106,12 +108,37 @@ class CategoryManager extends Component
 
         $this->validate($rules);
 
-        $imagePath = $this->image_desktop;
+       $imagePath = $this->image_desktop;
 
-        if ($this->image_desktop_upload) {
+        //Guardado de imagenes Local
+        /* if ($this->image_desktop_upload) {
             $filename = ($this->category_id ? 'dsk-' : 'bg-') . Str::slug($this->name) . '.' . $this->image_desktop_upload->getClientOriginalExtension();
             $imagePath = $this->image_desktop_upload->storeAs('categorias', $filename, 'public');
+        } */
+
+
+        //Guardado de imagenes Cluodinary
+        /*   $uploadedFile = cloudinary()->uploadApi()->upload(
+            $this->image_desktop_upload->getRealPath(),
+            [
+                'folder' => 'categorias',
+                'public_id' => Str::slug($this->name),
+                'overwrite' => true,
+                'resource_type' => 'image',
+                'transformation' => [
+                    'quality' => 'auto',
+                    'fetch_format' => 'auto',
+                ],
+            ]
+        );
+
+        $imagePath = $uploadedFile['secure_url']; */
+
+
+        if ($this->image_desktop_upload) {
+            $imagePath = $this->uploadImageToCloudinary($this->image_desktop_upload, Str::slug($this->name));
         }
+
 
         // Solución al problema del select vacío
         if ($this->parent_id === '' || $this->parent_id === 0) {
@@ -145,6 +172,43 @@ class CategoryManager extends Component
 
     }
 
+    private function uploadImageToCloudinary($image, $slug)
+    {
+        /*   $response = cloudinary()->uploadApi()->upload(
+            $image->getRealPath(),
+            [
+                'folder' => 'categorias',
+                'public_id' => $slug,
+                'overwrite' => true,
+                'resource_type' => 'image',
+                'transformation' => [
+                    'quality' => 'auto',
+                    'fetch_format' => 'auto',
+                ],
+            ]
+        );
+
+        return $response['secure_url']; */
+
+
+        $response = Cloudinary::uploadApi()->upload(
+            $image->getRealPath(),
+            [
+                'folder' => 'categorias',
+                'public_id' => $slug,
+                'overwrite' => true,
+                'resource_type' => 'image',
+                'transformation' => [
+                    'quality' => 'auto',
+                    'fetch_format' => 'auto',
+                ],
+            ]
+        );
+
+        return $response['secure_url'];
+    }
+
+
     public function delete($id)
     {
         $category = Category::findOrFail($id);
@@ -173,8 +237,6 @@ class CategoryManager extends Component
       //  $this->loadCategories();
     }
 
-
-
     public function updatedFilterActive()
     {
         $this->resetPage();
@@ -189,8 +251,6 @@ class CategoryManager extends Component
     {
         $this->resetPage();
     }
-
-
 
     public function render()
     {
