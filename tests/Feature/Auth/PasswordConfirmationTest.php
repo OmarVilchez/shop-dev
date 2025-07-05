@@ -22,7 +22,7 @@ test('password can be confirmed', function () {
 
     $response
         ->assertHasNoErrors()
-        ->assertRedirect(route('manager.dashboard', absolute: false));
+        ->assertRedirect(route('/', absolute: false));
 });
 
 test('password is not confirmed with invalid password', function () {
