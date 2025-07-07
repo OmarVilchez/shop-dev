@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\Categories;
+namespace App\Livewire\Admin\Catalog\Categories;
 
 use App\Models\Category;
 use Livewire\Component;
@@ -11,7 +11,6 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use App\Helpers\Flash;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-
 
 class CategoryManager extends Component
 {
@@ -108,7 +107,7 @@ class CategoryManager extends Component
 
         $this->validate($rules);
 
-       $imagePath = $this->image_desktop;
+        $imagePath = $this->image_desktop;
 
         //Guardado de imagenes Local
         /* if ($this->image_desktop_upload) {
@@ -168,7 +167,7 @@ class CategoryManager extends Component
         Flash::success('Categoría guardada exitosamente');
         //return redirect()->route('manager.catalog.categories.index');
 
-       // $this->dispatch('show-alert', title: '¡Guardado!', message: 'Categoría registrada');
+        // $this->dispatch('show-alert', title: '¡Guardado!', message: 'Categoría registrada');
 
     }
 
@@ -214,7 +213,7 @@ class CategoryManager extends Component
         $category = Category::findOrFail($id);
         if (Auth::user()->can('eliminar categorias')) {
             // $category->stockKeepingUnits()->count() == 0 ? $category->forceDelete() : $category->delete();
-           // $this->loadCategories();
+            // $this->loadCategories();
             $this->dispatch('show-alert', title: 'Eliminado', message: 'Categoría eliminada');
         }
     }
@@ -234,7 +233,7 @@ class CategoryManager extends Component
             : 'asc';
 
         $this->sortField = $field;
-      //  $this->loadCategories();
+        //  $this->loadCategories();
     }
 
     public function updatedFilterActive()
@@ -260,7 +259,7 @@ class CategoryManager extends Component
             $categoriesQuery = $categoriesQuery->where('name', 'like', '%' . $this->search . '%');
         }
 
-        if ($this->filterActive !== ''){
+        if ($this->filterActive !== '') {
             $categoriesQuery = $categoriesQuery->where('active', $this->filterActive);
         }
 
@@ -277,8 +276,12 @@ class CategoryManager extends Component
         // $categories = $categoriesQuery->orderBy('position')->get();
         $categories = $categoriesQuery->paginate(10);
 
-        return view('livewire.admin.categories.category-manager', ['categories' => $categories])->layout('components.layouts.admin');
+        return view('livewire.admin.catalog.categories.category-manager', ['categories' => $categories])->layout('components.layouts.admin');
     }
+}
+
+
+
 
 
     /*  public function updatedSearch()
@@ -540,4 +543,3 @@ class CategoryManager extends Component
 
         return view('livewire.admin.categories.category-manager', ['categories' => $categories])->layout('components.layouts.admin');
     } */
-}

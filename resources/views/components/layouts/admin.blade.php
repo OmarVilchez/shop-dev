@@ -1,21 +1,7 @@
 @php
-$groups = [
-'Plataform' => [
-[
-'name' => 'Dashboard',
-'icon' => 'home',
-'url' => route('manager.dashboard'),
-'current' => request()->routeIs('manager.dashboard'),
-],
-[
-'name' => 'Categorias',
-'icon' => 'funnel',
-'url' => route('manager.catalog.categories.index'),
-'current' => request()->routeIs('manager.catelog.categories.*'),
-],
-],
-];
+    $groups = config('menu');
 @endphp
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 
@@ -54,26 +40,41 @@ $groups = [
             <x-app-logo />
         </a>
 
-        <flux:navlist variant="outline">
+        <flux:navlist variant="outline" class="w-auto">
+
+            <!-- Ítems individuales -->
+            <flux:navlist.item icon="home" :href="route('manager.dashboard')" :current="request()->routeIs('manager.dashboard')"
+                wire:navigate>
+                Panel
+            </flux:navlist.item>
+
+            <flux:navlist.item icon="shopping-cart" :href="route('manager.orders.index')"
+                :current="request()->routeIs('manager.orders.index')" wire:navigate>
+                Órdenes
+            </flux:navlist.item>
+
+            <!-- Items agrupados de Menu -->
             @foreach ($groups as $group => $links)
-            <flux:navlist.group :heading="__($group)" class="grid">
-                @foreach ($links as $link)
-                <flux:navlist.item :icon="$link['icon']" :href="$link['url']" :current="$link['current']" wire:navigate>
-                    {{
-                    __($link['name']) }}
-                </flux:navlist.item>
-                @endforeach
-            </flux:navlist.group>
+                <flux:navlist.group :heading="__($group)" expandable
+                    :expanded="request()->routeIs( Str::lower('manager.' . Str::snake($group)) . '.*' )" class="grid">
+                    @foreach ($links as $link)
+                    @can($link['can'])
+                    <flux:navlist.item :icon="$link['icon']" :href="route($link['route'])" :current="request()->routeIs($link['route'])"
+                        wire:navigate>
+                        {{ __($link['name']) }}
+                    </flux:navlist.item>
+                    @endcan
+                    @endforeach
+                </flux:navlist.group>
             @endforeach
+
+            <!-- Ítem individual al final -->
+            <flux:navlist.item icon="clipboard-document-list" :href="route('manager.logs.index')"
+                :current="request()->routeIs('manager.logs.index')" wire:navigate>
+                Logs
+            </flux:navlist.item>
+
         </flux:navlist>
-
-        {{-- <flux:navlist variant="outline">
-            <flux:navlist.group :heading="__('Platform')" class="grid">
-                <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
-                    wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-            </flux:navlist.group>
-        </flux:navlist> --}}
-
 
         <flux:spacer />
 
@@ -233,3 +234,65 @@ $groups = [
 </body>
 
 </html>
+
+
+
+   {{-- <flux:navlist variant="outline">
+            @foreach ($groups as $group => $links)
+            <flux:navlist.group :heading="__($group)" class="grid">
+                @foreach ($links as $link)
+                <flux:navlist.item :icon="$link['icon']" :href="$link['url']" :current="$link['current']" wire:navigate>
+                    {{
+                    __($link['name']) }}
+                </flux:navlist.item>
+                @endforeach
+            </flux:navlist.group>
+            @endforeach
+        </flux:navlist> --}}
+
+        {{-- <flux:navlist variant="outline">
+            @foreach ($groups as $group => $links)
+            <flux:navlist.group :heading="__($group)" class="grid">
+                @foreach ($links as $link)
+                @can($link['can'])
+                <flux:navlist.item :icon="$link['icon']" :href="route($link['route'])"
+                    :current="request()->routeIs($link['route'])" wire:navigate>
+                    {{ __($link['name']) }}
+                </flux:navlist.item>
+                @endcan
+                @endforeach
+            </flux:navlist.group>
+            @endforeach
+        </flux:navlist>
+        --}}
+
+     {{--    <flux:navlist.item icon="home" :href="route('manager.dashboard')"
+            :current="request()->routeIs('manager.dashboard')" wire:navigate>
+            Panel
+        </flux:navlist.item>
+
+        <flux:navlist.item icon="shopping-cart" :href="route('manager.orders.index')"
+            :current="request()->routeIs('manager.orders.index')" wire:navigate>
+            Ordenes
+        </flux:navlist.item>
+
+        <flux:navlist variant="outline" >
+            @foreach ($groups as $group => $links)
+            <flux:navlist.group :heading="__($group)" expandable
+                :expanded="request()->routeIs( Str::lower('manager.' . Str::snake($group)) . '.*' )" class="grid">
+                @foreach ($links as $link)
+                @can($link['can'])
+                <flux:navlist.item :icon="$link['icon']" :href="route($link['route'])"
+                    :current="request()->routeIs($link['route'])" wire:navigate>
+                    {{ __($link['name']) }}
+                </flux:navlist.item>
+                @endcan
+                @endforeach
+            </flux:navlist.group>
+            @endforeach
+        </flux:navlist>
+
+        <flux:navlist.item icon="clipboard-document-list" :href="route('manager.logs.index')"
+            :current="request()->routeIs('manager.logs.index')" wire:navigate>
+            Logs
+        </flux:navlist.item> --}}
