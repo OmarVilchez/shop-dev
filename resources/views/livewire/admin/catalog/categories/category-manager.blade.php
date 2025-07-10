@@ -1,4 +1,8 @@
 <div>
+    @section('title')
+    {{ __('Gestor de Categorias') }}
+    @endsection
+
     <flux:breadcrumbs class="mb-4">
         <flux:breadcrumbs.item :href="route('manager.dashboard')">
             {{ __('Dashboard') }}
