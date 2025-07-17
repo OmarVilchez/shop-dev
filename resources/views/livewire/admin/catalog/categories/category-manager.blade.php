@@ -50,7 +50,7 @@
                         <th class="px-4 py-3 cursor-pointer" wire:click="sortBy('title')">Título</th>
                         <th class="px-4 py-3">Descripción</th>
                         <th class="px-4 py-3">Estado</th>
-                        <th class="px-4 py-3">Acciones</th>
+                        <th class="px-4 py-3 sr-only">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 dark:divide-zinc-800">

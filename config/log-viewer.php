@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'back_to_system_url' => config('app.url', null) . '/manager',
+    'back_to_system_url' => config('app.url', null) . '/manager/dashboard',
 
     'back_to_system_label' => 'Logs - Manager', // Displayed by default: "Back to {{ app.name }}"
 

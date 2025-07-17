@@ -17,7 +17,6 @@ class ClientManager extends Component
     public $sortDirection = '';
     public $filterActive = '';
 
-
     public function toggleActive($id)
     {
         $client = User::findOrFail($id);
@@ -31,9 +30,7 @@ class ClientManager extends Component
         $this->sortDirection = $this->sortField === $field
             ? ($this->sortDirection === 'asc' ? 'desc' : 'asc')
             : 'asc';
-
         $this->sortField = $field;
-        //  $this->loadCategories();
     }
 
     public function updatedsearch()
@@ -50,7 +47,6 @@ class ClientManager extends Component
     {
         $ClientQuery = User::query();
 
-
         if (!empty($this->search)) {
             $ClientQuery = $ClientQuery->where('name', 'like', '%' . $this->search . '%');
         }
@@ -64,11 +60,9 @@ class ClientManager extends Component
             $ClientQuery = $ClientQuery->orderBy($this->sortField, $this->sortDirection);
         }
 
-
         $clients = $ClientQuery->whereDoesntHave('roles')->paginate(10);
 
         $roles = Role::all();
-
 
         return view('livewire.admin.master-data.clients.client-manager', ['clients' => $clients, 'roles' => $roles ] )->layout('components.layouts.admin');
     }

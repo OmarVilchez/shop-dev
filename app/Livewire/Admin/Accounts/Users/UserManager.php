@@ -8,6 +8,6 @@ class UserManager extends Component
 {
     public function render()
     {
-        return view('livewire.admin.accounts.users.user-manager');
+        return view('livewire.admin.accounts.users.user-manager')->layout('components.layouts.admin');
     }
 }

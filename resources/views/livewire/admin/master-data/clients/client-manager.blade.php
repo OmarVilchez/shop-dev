@@ -10,11 +10,16 @@
             {{ __('Dashboard') }}
         </flux:breadcrumbs.item>
         <flux:breadcrumbs.item :href="route('manager.master.clients.index')">
-            {{ __('Clients') }}
+            {{ __('Clientes') }}
         </flux:breadcrumbs.item>
     </flux:breadcrumbs>
 
     <div class="p-0 sm:p-6 space-y-6">
+
+        <!-- Título y botón -->
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <h1 class="text-2xl font-bold tracking-tight text-balance text-gray-800 dark:text-white">Clientes</h1>
+        </div>
 
         <!-- Filtros -->
         <div class="flex flex-col sm:flex-row gap-3">
@@ -72,7 +77,7 @@
                                 </span>
                             </div>
                         </td>
-                       <td class="px-4 py-2 whitespace-nowrap font-medium">
+                        <td class="px-4 py-2 whitespace-nowrap font-medium">
                             {{ $client->created_at->format('d-m-Y') }}
                         </td>
                     </tr>

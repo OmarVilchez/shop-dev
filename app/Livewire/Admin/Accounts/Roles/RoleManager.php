@@ -8,6 +8,6 @@ class RoleManager extends Component
 {
     public function render()
     {
-        return view('livewire.admin.accounts.roles.role-manager');
+        return view('livewire.admin.accounts.roles.role-manager')->layout('components.layouts.admin');
     }
 }
