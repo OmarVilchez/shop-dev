@@ -74,27 +74,6 @@ return [
         ],
     ],
 
-    'Cuentas' => [
-        [
-            'name' => 'Permisos',
-            'icon' => 'shield-check',
-            'route' => 'manager.accounts.permissions.index',
-            'can' => 'listar permisos',
-        ],
-        [
-            'name' => 'Roles',
-            'icon' => 'user-group',
-            'route' => 'manager.accounts.roles.index',
-            'can' => 'listar roles',
-        ],
-        [
-            'name' => 'Usuarios',
-            'icon' => 'users',
-            'route' => 'manager.accounts.users.index',
-            'can' => 'listar usuarios',
-        ],
-    ],
-
     'MasterData' => [
         [
             'name' => 'Contactos',
@@ -113,6 +92,27 @@ return [
             'icon' => 'envelope',
             'route' => 'manager.master.subscribers.index',
             'can' => 'listar suscriptores',
+        ],
+    ],
+
+    'Cuentas' => [
+        [
+            'name' => 'Permisos',
+            'icon' => 'shield-check',
+            'route' => 'manager.accounts.permissions.index',
+            'can' => 'listar permisos',
+        ],
+        [
+            'name' => 'Roles',
+            'icon' => 'user-group',
+            'route' => 'manager.accounts.roles.index',
+            'can' => 'listar roles',
+        ],
+        [
+            'name' => 'Usuarios',
+            'icon' => 'users',
+            'route' => 'manager.accounts.users.index',
+            'can' => 'listar usuarios',
         ],
     ],
 ];

@@ -18,7 +18,7 @@
 
         <!-- Título y botón -->
         <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <h1 class="text-2xl font-bold tracking-tight text-balance text-gray-800 dark:text-white">Clientes</h1>
+            <h1 class="text-2xl font-bold tracking-tight text-balance text-gray-800 dark:text-white">Clientes registrados</h1>
         </div>
 
         <!-- Filtros -->

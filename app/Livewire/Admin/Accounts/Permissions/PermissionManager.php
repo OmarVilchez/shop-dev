@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Accounts\Permissions;
 
 use App\Helpers\Flash;
+use Flux\Flux;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -23,12 +24,15 @@ class PermissionManager extends Component
     public $showModalOpen = false;
 
     protected $rules = [
-        'name' => 'required',
+        'name' => 'required|unique:permissions,name',
     ];
 
     public function create()
     {
-        $this->validate();
+        $this->validate([
+            'name' => 'required|unique:permissions,name',
+        ]);
+
         Permission::create($this->modelData());
         $this->showModalOpen = false;
         $this->reset();
@@ -38,6 +42,10 @@ class PermissionManager extends Component
 
     public function update()
     {
+        $this->validate([
+            'name' => 'required|unique:permissions,name',
+        ]);
+
         $this->validate();
         Permission::find($this->permission_id)->update($this->modelData());
         $this->showModalOpen = false;
@@ -45,15 +53,14 @@ class PermissionManager extends Component
         Flash::success('Permiso actualizado exitosamente');
     }
 
-
-    public function delete($id)
+ /*    public function delete($id)
     {
         $permission = Permission::findOrFail($id);
         if (Auth::user()->can('eliminar permisos')) {
             $this->dispatch('show-alert', title: 'Eliminado', message: 'Permiso eliminado');
         }
     }
-
+ */
     public function loadModel()
     {
         $data = Permission::find($this->permission_id);
@@ -97,6 +104,39 @@ class PermissionManager extends Component
         $this->sortField = $field;
     }
 
+    /*  public $confirmingPermissionDeletion = false;
+    public $permissionIdToDelete = null;
+
+
+    public function deletePermission()
+    {
+        $permission = Permission::findOrFail($this->permissionIdToDelete);
+
+        if (Auth::user()->can('eliminar permisos')) {
+            $permission->delete();
+
+            $this->dispatch('show-alert', title: 'Eliminado', message: 'Permiso eliminado exitosamente');
+        }
+
+        $this->confirmingPermissionDeletion = false;
+        $this->permissionIdToDelete = null;
+    }
+
+    public function confirmDelete($id)
+    {
+        $this->permissionIdToDelete = $id;
+        $this->confirmingPermissionDeletion = true;
+    } */
+
+
+    public function eliminar($id)
+    {
+        Permission::findOrFail($id)->delete();
+        Flux::modals()->close();
+        Flash::success('Permiso eliminado correctamente');
+    }
+
+
     public function render()
     {
         $permissionsQuery = Permission::query();
@@ -113,7 +153,6 @@ class PermissionManager extends Component
 
 
         return view('livewire.admin.accounts.permissions.permission-manager', ['permissions' => $permissions])->layout('components.layouts.admin');
-
     }
 
 }

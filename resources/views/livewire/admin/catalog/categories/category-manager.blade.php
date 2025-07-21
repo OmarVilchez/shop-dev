@@ -1,9 +1,9 @@
 <div>
     @section('title')
-    {{ __('Gestor de Categorias') }}
+        {{ __('Gestor de Categorias') }}
     @endsection
 
-    <flux:breadcrumbs class="mb-4">
+    <flux:breadcrumbs class="px-6">
         <flux:breadcrumbs.item :href="route('manager.dashboard')">
             {{ __('Dashboard') }}
         </flux:breadcrumbs.item>
@@ -12,123 +12,115 @@
         </flux:breadcrumbs.item>
     </flux:breadcrumbs>
 
-    <div class="p-0 sm:p-6 space-y-6">
+    <div class="admin-section">
 
         <!-- Título y botón -->
-        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <h1 class="text-2xl font-bold tracking-tight text-balance text-gray-800 dark:text-white">Categorías</h1>
-            <flux:button wire:click="openModal" variant="primary" color="green" class="rounded-xl shadow-sm">Nueva Categoría
+        <div class="admin-header">
+            <h1 class="admin-title">Categorías</h1>
+            <flux:button wire:click="openModal" variant="primary" color="green" class="admin-action-btn">Nueva Categoría
             </flux:button>
         </div>
 
         <!-- Filtros -->
-        <div class="flex flex-col sm:flex-row gap-3">
-            <flux:input type="text" wire:model.live="search" placeholder="Buscar..." class="w-full {{-- sm:max-w-xs --}}" />
-
-            <flux:select wire:model.live="filterType" class="w-full sm:max-w-xs">
+        <div class="admin-filters">
+            <flux:input type="text" wire:model.live="search" placeholder="Buscar..." class="admin-filter-input" />
+            <flux:select wire:model.live="filterType" class="admin-filter-select">
                 <option value="">Tipos de Categoría</option>
                 <option value="categoria">Solo categorías</option>
                 <option value="subcategoria">Solo subcategorías</option>
             </flux:select>
-
-            <flux:select id="filterActive" wire:model.live="filterActive" class="w-full sm:max-w-xs">
+            <flux:select id="filterActive" wire:model.live="filterActive" class="admin-filter-select">
                 <option value="">Todos los estados</option>
                 <option value="1">Activos</option>
                 <option value="0">Inactivos</option>
             </flux:select>
-
         </div>
 
         <!-- Tabla -->
-        <div class="overflow-x-auto rounded-xl shadow-sm ring-1 ring-gray-200 dark:ring-zinc-700 bg-white dark:bg-zinc-900">
-            <table class="min-w-full text-sm text-left text-gray-600 dark:text-gray-300">
-                <thead class="bg-gray-100 dark:bg-zinc-800 text-xs uppercase">
-                    <tr class="text-gray-700 dark:text-gray-300">
-                        <th class="px-4 py-3 cursor-pointer" wire:click="sortBy('id')">ID</th>
-                        <th class="px-4 py-3">Tipo</th>
-                        <th class="px-4 py-3 cursor-pointer" wire:click="sortBy('name')">Nombre</th>
-                        <th class="px-4 py-3 cursor-pointer" wire:click="sortBy('title')">Título</th>
-                        <th class="px-4 py-3">Descripción</th>
-                        <th class="px-4 py-3">Estado</th>
-                        <th class="px-4 py-3 sr-only">Acciones</th>
+        <div class="admin-table-container overflow-x-auto">
+            <table class="admin-table">
+                <thead class="admin-thead">
+                    <tr>
+                        <th class="admin-th cursor-pointer" wire:click="sortBy('id')">ID</th>
+                        <th class="admin-th">Tipo</th>
+                        <th class="admin-th cursor-pointer" wire:click="sortBy('name')">Nombre</th>
+                        <th class="admin-th cursor-pointer" wire:click="sortBy('title')">Título</th>
+                        <th class="admin-th">Descripción</th>
+                        <th class="admin-th">Estado</th>
+                        <th class="admin-th text-center">Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100 dark:divide-zinc-800">
-                    @foreach($categories as $category)
-                    <tr class="hover:bg-gray-50 dark:hover:bg-zinc-800/40 transition">
-                        <td class="px-4 py-2">{{ $category->id }}</td>
 
-                        <!-- Tipo -->
-                        <td class="px-4 py-2">
-                            <span
-                                class="px-2 py-1 text-xs font-medium rounded-full
-                                    {{ $category->parent_id ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' }}">
-                                {{ $category->parent_id ? 'Subcategoría' : 'Categoría' }}
-                            </span>
-                        </td>
+                <tbody class="admin-tbody">
+                    @forelse ( $categories as $key => $category )
+                        <tr class="admin-row">
+                            <td class="admin-td">{{ $category->id }}</td>
 
-                        <td class="px-4 py-2 whitespace-nowrap font-medium">{{ $category->name }}</td>
-                        <td class="px-4 py-2 truncate max-w-[200px]">{{ Str::limit($category->title, 40) }}</td>
-                        <td class="px-4 py-2 truncate max-w-[160px]">{{ Str::limit($category->description, 30) }}</td>
-
-                        <!-- Estado switch -->
-                        <td class="px-4 py-2">
-                            <div class="flex items-center gap-2">
-                                <button wire:click="toggleActive({{ $category->id }})" class="relative inline-flex items-center h-6 w-11 rounded-full transition-colors focus:outline-none
-                                            {{ $category->active ? 'bg-green-600' : 'bg-gray-300 dark:bg-zinc-600' }}">
-                                    <span class="inline-block w-5 h-5 transform bg-white rounded-full shadow transition
-                                            {{ $category->active ? 'translate-x-5' : 'translate-x-1' }}"></span>
-                                </button>
-                                <span
-                                    class="text-xs font-medium {{ $category->active ? 'text-green-600' : 'text-gray-500 dark:text-gray-400' }}">
-                                    {{ $category->active ? 'Activo' : 'Inactivo' }}
+                            <!-- Tipo -->
+                            <td class="admin-td">
+                                <span class="px-2 py-1 text-xs font-medium rounded-full {{ $category->parent_id ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' }}">
+                                    {{ $category->parent_id ? 'Subcategoría' : 'Categoría' }}
                                 </span>
-                            </div>
-                        </td>
+                            </td>
 
-                        <!-- Acciones -->
-                        <td class="px-4 py-2 flex flex-row items-center gap-2">
-                            @if($category->active)
-                            <a href="#" target="_blank" class="p-1.5 rounded hover:bg-green-100 dark:hover:bg-green-900"
-                                title="Ver en tienda">
-                                <flux:icon name="globe-alt" class="w-5 h-5 text-green-600 dark:text-green-400" />
-                            </a>
-                            @else
-                            <span class="p-1.5 rounded opacity-50 cursor-not-allowed bg-gray-100 dark:bg-zinc-800"
-                                title="Solo si está activa">
-                                <flux:icon name="globe-alt" class="w-5 h-5 text-gray-400 dark:text-gray-600" />
-                            </span>
-                            @endif
+                            <td class="admin-td">{{ $category->name }}</td>
+                            <td class="admin-td max-w-[200px]">{{ Str::limit($category->title, 40) }}</td>
+                            <td class="admin-td max-w-[200px]">{{ Str::limit($category->description, 30) }}</td>
 
-                            <button wire:click="openModal({{ $category->id }})"
-                                class="p-1.5 rounded hover:bg-blue-100 dark:hover:bg-blue-900" title="Editar">
-                                <flux:icon name="pencil" class="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                            </button>
+                            <!-- Estado switch -->
+                            <td class="admin-td">
+                                <div class="admin-switch-container">
+                                    <button wire:click="toggleActive({{ $category->id }})" class="admin-switch {{ $category->active ? 'bg-green-600' : 'bg-gray-300 dark:bg-zinc-600' }}">
+                                        <span class="admin-switch-thumb {{ $category->active ? 'translate-x-5' : 'translate-x-1' }}"></span>
+                                    </button>
+                                    <span class="text-xs font-medium {{ $category->active ? 'text-green-600' : 'text-gray-500 dark:text-gray-400' }}">
+                                        {{ $category->active ? 'Activo' : 'Inactivo' }}
+                                    </span>
+                                </div>
+                            </td>
 
-                            <button wire:click="delete({{ $category->id }})"
-                                class="p-1.5 rounded hover:bg-red-100 dark:hover:bg-red-900" title="Eliminar">
-                                <flux:icon name="trash" class="w-5 h-5 text-red-600 dark:text-red-400" />
-                            </button>
-                        </td>
-                    </tr>
-                    @endforeach
+                            <!-- Acciones -->
+                            <td class="admin-actions">
+                                @if($category->active)
+                                    <a href="#" target="_blank" class="admin-btn admin-btn-view" title="Ver en tienda">
+                                        <flux:icon name="globe-alt" class="admin-icon-view" />
+                                    </a>
+                                @else
+                                    <span class="admin-btn admin-btn-disabled" title="Solo si está activa">
+                                        <flux:icon name="globe-alt" class="admin-icon-disabled" />
+                                    </span>
+                                @endif
+                                <button wire:click="openModal({{ $category->id }})"
+                                    class="admin-btn admin-btn-edit" title="Editar">
+                                    <flux:icon name="pencil" class="admin-icon-edit" />
+                                </button>
+                                <button wire:click="delete({{ $category->id }})"
+                                    class="admin-btn admin-btn-delete" title="Eliminar">
+                                    <flux:icon name="trash" class="admin-icon-delete" />
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7">
+                                <div class="flex items-center justify-center">
+                                    <span class="py-3 text-sm font-medium text-theme-gray">{{ __('No se ha encontrado ninguna categoría')}}</span>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
-
         <div>
-            {{ $categories->links()}}
+            {{ $categories->links() }}
         </div>
-
     </div>
 
     <flux:modal wire:model="showModal" class="z-50">
-        <div
-            class="sm:px-2 sm:py-6 w-[85vw] sm:w-[90vw] max-w-md  mx-auto">
+        <div class="sm:px-2 sm:py-6 w-[85vw] sm:w-[90vw] max-w-md  mx-auto">
 
             <!-- Título -->
-
-
             <h2 class="text-lg sm:text-xl font-semibold mb-4 dark:text-white">
                 {{ $category_id ? 'Editar Categoría' : 'Nueva Categoría' }}
             </h2>

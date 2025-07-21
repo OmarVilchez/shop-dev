@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Admin\Accounts\Roles;
 
+use App\Helpers\Flash;
+use Flux\Flux;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\Permission\Models\Permission;
@@ -18,7 +20,6 @@ class RoleManager extends Component
     public $sortField = '';
     public $sortDirection = '';
 
-
     public $roleSelected;
     public $permissionsApply = [];
 
@@ -28,7 +29,7 @@ class RoleManager extends Component
     protected $queryString = ['sortField' => ['except' => ''], 'sortDirection' => ['except' => '']];
 
     protected $rules = [
-        'name' => 'required',
+        'name' => 'required|unique:roles,name',
     ];
 
     public function loadModel()
@@ -44,26 +45,32 @@ class RoleManager extends Component
         ];
     }
 
-
     public function create()
     {
-        $this->validate();
+        $this->validate([
+            'name' => 'required|unique:roles,name',
+        ]);
+
         Role::create($this->modelData());
         $this->showModalRoleOpen = false;
         $this->reset();
 
-        $this->emit('show-alert', 'Rol registrado', 'success');
+        Flux::modals()->close();
+        Flash::success('Rol registrado correctamente');
     }
 
     public function update()
     {
-        $this->validate();
+        $this->validate([
+            'name' => 'required|unique:roles,name',
+        ]);
+
         Role::find($this->role_id)->update($this->modelData());
         $this->showModalRoleOpen = false;
 
-        $this->emit('show-alert', 'Rol actualizado', 'success');
+        Flux::modals()->close();
+        Flash::success('Rol actualizado correctamente');
     }
-
 
     public function createShowModal()
     {
@@ -89,14 +96,20 @@ class RoleManager extends Component
     public function syncPermissions()
     {
         if ($this->roleSelected) {
-            $this->roleSelected->syncPermissions($this->permissionsApply);
+
+            // Convertimos IDs a nombres
+           /*  $permissions = Permission::whereIn('id', $this->permissionsApply)->pluck('name')->toArray();
+            $this->roleSelected->syncPermissions($permissions); */
+
+            $this->roleSelected->permissions()->sync($this->permissionsApply);
             $this->showModalRoleOpen = false;
             $this->reset();
-            return $this->emit('show-alert', 'Permisos asignados', 'success');
+            Flash::success('Permisos asignados');
         }
 
-        return $this->emit('show-alert', 'seleccione rol', 'error');
+       //return $this->emit('show-alert', 'seleccione rol', 'error');
     }
+
 
     public function AssignPermissonShowModal(Role $role)
     {
@@ -107,7 +120,6 @@ class RoleManager extends Component
         $this->showModalAssignRolesOpen = true;
     }
 
-
     public function sortBy($field)
     {
         $this->sortDirection = $this->sortField === $field
@@ -116,11 +128,6 @@ class RoleManager extends Component
 
         $this->sortField = $field;
     }
-
-  /*   public function paginationView()
-    {
-        return 'vendor.livewire.custom-pagination-links-view';
-    } */
 
     public function render()
     {

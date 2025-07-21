@@ -49,10 +49,12 @@
                 Panel
             </flux:navlist.item>
 
-            <flux:navlist.item icon="shopping-cart" :href="route('manager.orders.index')"
-                :current="request()->routeIs('manager.orders.index')" wire:navigate>
-                Órdenes
-            </flux:navlist.item>
+            @can('listar ordenes')
+                <flux:navlist.item icon="shopping-cart" :href="route('manager.orders.index')"
+                    :current="request()->routeIs('manager.orders.index')" wire:navigate>
+                    Órdenes
+                </flux:navlist.item>
+            @endcan
 
             <!-- Items agrupados de Menu -->
             @foreach ($groups as $group => $links)
@@ -70,11 +72,13 @@
             @endforeach
 
             <!-- Ítem individual al final -->
-            <flux:navlist.item icon="clipboard-document-list" :href="route('manager.logs.index')"
-                :current="request()->routeIs('manager.logs.index')" wire:navigate>
-                Logs
-            </flux:navlist.item>
 
+            @can('listar logs')
+                <flux:navlist.item icon="clipboard-document-list" :href="route('manager.logs.index')"
+                    :current="request()->routeIs('manager.logs.index')" wire:navigate>
+                    Logs
+                </flux:navlist.item>
+            @endcan
         </flux:navlist>
 
         <flux:spacer />
