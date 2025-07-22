@@ -5,5 +5,5 @@
     {{ $slot }}
 </flux:main>
 
-
+<x-layouts.app.footer />
 @fluxScripts

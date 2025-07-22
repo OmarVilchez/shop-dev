@@ -30,8 +30,10 @@ $links = [
     @fluxAppearance
 </head>
 
-<body class="min-h-screen bg-white dark:bg-zinc-800">
-    <flux:header container class="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+<body class="min-h-screen bg-white dark:bg-zinc-800 ">
+    <flux:header  class=" border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-purple-900">
+
+    <div class="w-full max-w-[90%] mx-auto flex items-center">
         <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
         <div class="flex w-full items-center justify-between">
@@ -124,8 +126,10 @@ $links = [
             </flux:menu>
         </flux:dropdown>
         @endauth
-
+</div>
     </flux:header>
+
+
 
 
     <!-- Mobile Menu -->

@@ -180,6 +180,14 @@
     .admin-result-text {
         @apply py-3 text-sm font-medium text-gray-600 dark:text-gray-300 ;
     }
+
+
+     /* Tamaño de pantalla */
+    .container-app{
+        @apply max-w-[90%] mx-auto;
+    }
+
+
 }
 
 [data-flux-field]:not(ui-radio, ui-checkbox) {
