@@ -3,7 +3,7 @@
         {{ __('Gestor de Roles') }}
     @endsection
 
-    <flux:breadcrumbs class="px-6">
+    <flux:breadcrumbs class="p-6">
         <flux:breadcrumbs.item :href="route('manager.dashboard')">
             {{ __('Dashboard') }}
         </flux:breadcrumbs.item>

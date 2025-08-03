@@ -16,11 +16,8 @@
     @fluxAppearance
 </head>
 
-<body class="min-h-screen bg-white dark:bg-gray-50">
+<body class="min-h-screen bg-gray-50 pt-[95px] xl:pt-[130px]">
 
-    {{-- Header separado --}}
-
- {{--    @include('layouts.app.header', ['title' => $title ?? null]) --}}
     <x-layouts.app.header :title="$title ?? null" />
 
     {{-- Contenido principal --}}
@@ -35,6 +32,11 @@
 </body>
 
 </html>
+
+
+{{-- Header separado --}}
+
+    {{-- @include('layouts.app.header', ['title' => $title ?? null]) --}}
 
 {{-- <x-layouts.app.header :title="$title ?? null" />
 

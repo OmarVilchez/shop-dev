@@ -14,10 +14,10 @@ use App\Livewire\Admin\Content\Announcements\AnnouncementManager;
 use App\Livewire\Admin\Content\Blog\BlogManager;
 use App\Livewire\Admin\Content\Faqs\FaqManager;
 use App\Livewire\Admin\Content\Quotes\QuoteManager;
-use App\Livewire\Admin\Content\Sliders\SliderManager;
 use App\Livewire\Admin\Accounts\Permissions\PermissionManager;
 use App\Livewire\Admin\Accounts\Roles\RoleManager;
 use App\Livewire\Admin\Accounts\Users\UserManager;
+use App\Livewire\Admin\Content\Banners\BannerManager;
 use App\Livewire\Admin\MasterData\Clients\ClientManager;
 use App\Livewire\Admin\MasterData\Contacts\ContactManager;
 use App\Livewire\Admin\MasterData\Subscribers\SubscriberManager;
@@ -43,7 +43,7 @@ Route::get('content/announcements', AnnouncementManager::class)->middleware('can
 Route::get('content/blog', BlogManager::class)->middleware('can:listar blog')->name('content.blog.index');
 Route::get('content/faqs', FaqManager::class)->middleware('can:listar faqs')->name('content.faqs.index');
 Route::get('content/quotes', QuoteManager::class)->middleware('can:listar cotizaciones')->name('content.quotes.index');
-Route::get('content/sliders', SliderManager::class)->middleware('can:listar sliders')->name('content.sliders.index');
+Route::get('content/banners', BannerManager::class)->middleware('can:listar banners')->name('content.banners.index');
 
 // CUENTAS
 Route::get('accounts/permissions', PermissionManager::class)->middleware('can:listar permisos')->name('accounts.permissions.index');

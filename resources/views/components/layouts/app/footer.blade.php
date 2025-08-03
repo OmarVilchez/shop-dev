@@ -46,13 +46,14 @@
         </div>
         <hr class="my-6 border-[#2E39FF] opacity-25  sm:mx-auto lg:my-4" />
         <span class="block text-sm text-gray-500 text-center dark:text-gray-400 md:pb-6">Copyright © {{ now()->year }}
-            FLUYE BOTTLE S.A.C. – RUC:20602456537 | Elaborado por
+            VOLKAN – RUC:20602456537 | Elaborado por
         </span>
     </div>
 </flux:footer>
  --}}
 
- <flux:footer class="bg-black text-white rounded-t-[4rem]  py-2 sm:py-8 ">
+ {{-- rounded-t-[4rem] --}}
+ <flux:footer class="bg-black text-white   py-2 sm:py-8 ">
     <div class="container-app px-4 mt-8">
         <div class="flex flex-col lg:flex-row lg:justify-between md:gap-8">
             <!-- Columna 1: Información de la empresa -->
@@ -218,7 +219,7 @@
         <!-- Línea divisoria y copyright -->
         {{-- <hr class="my-6 border-white sm:mx-auto lg:my-8" /> --}}
         <div class="text-center text-xs text-white mt-6 lg:mt-16 border-hidden sm:border border-white">
-            Copyright© 2025 FLUYE BOTTLE S.A.C. – RUC:20602456537 | Elaborado por Ecom and More
+            Copyright© 2025 VOLKAN | Elaborado por VOLKAN
         </div>
     </div>
 

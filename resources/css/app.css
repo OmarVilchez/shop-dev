@@ -48,7 +48,7 @@
 
     /* Contenedor general de secciones admin */
     .admin-section {
-        @apply sm:p-6 space-y-6;
+        @apply p-4 sm:p-6 space-y-6 ;
     }
 
     /* Encabezado con título y botón */
@@ -186,6 +186,101 @@
     .container-app{
         @apply max-w-[90%] mx-auto;
     }
+
+
+
+    /* ANIMACION NRO 1 */
+    .marquee-container {
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .marquee-track {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .marquee-container-vertical {
+        overflow: hidden;
+        height: 300px;
+    }
+
+   /*  .marquee-track-vertical {
+        display: flex;
+        flex-direction: column;
+    } */
+
+    .animate-marquee-slow {
+        animation: marquee 50s linear infinite;
+    }
+
+    .animate-marquee-fast-reverse {
+        animation: marquee-reverse 50s linear infinite;
+    }
+
+  /*   .animate-marquee-vertical {
+        animation: marquee-vertical 25s linear infinite;
+    } */
+
+    /* Efecto de tipografía cinética */
+    .kinetic-text {
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+
+    .kinetic-text:hover {
+        transform: scale(1.1) rotate(0deg);
+        text-shadow: 0 0 10px currentColor;
+    }
+
+    /* Animaciones personalizadas */
+    @keyframes marquee {
+        0% {
+            transform: translateX(0);
+        }
+
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+
+    @keyframes marquee-reverse {
+        0% {
+            transform: translateX(-50%);
+        }
+
+        100% {
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes marquee-vertical {
+        0% {
+            transform: translateY(0);
+        }
+
+        100% {
+            transform: translateY(-50%);
+        }
+    }
+
+
+
+        /* ANIMACION NRO 2 */
+        @keyframes marquee2 {
+            0% {
+                transform: translate3d(var(--move-initial), 0, 0);
+            }
+
+            100% {
+                transform: translate3d(var(--move-final), 0, 0);
+            }
+        }
+
+        .animate-marquee {
+            animation: marquee2 15s linear infinite;
+        }
+
 
 
 }

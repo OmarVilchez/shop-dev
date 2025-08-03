@@ -67,10 +67,10 @@ return [
             'can' => 'listar faqs',
         ],
         [
-            'name' => 'Sliders',
+            'name' => 'Banners',
             'icon' => 'banknotes',
-            'route' => 'manager.content.sliders.index',
-            'can' => 'listar sliders',
+            'route' => 'manager.content.banners.index',
+            'can' => 'listar banners',
         ],
     ],
 
