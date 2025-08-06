@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('frequent_questions', function (Blueprint $table) {
+        Schema::create('quantities', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('section_question_id');
-            $table->string('name');
-            $table->text('description');
-            $table->smallInteger('position')->default(0);
+            $table->decimal('quanty_min', 14, 2);
+            $table->decimal('quanty_max', 14, 2)->nullable();
+            $table->string('description')->nullable();
+            $table->integer('position')->default(0);
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('section_question_id')->references('id')->on('section_questions');
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('frequent_questions');
+        Schema::dropIfExists('quantities');
     }
 };

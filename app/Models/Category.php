@@ -41,4 +41,30 @@ class Category extends Model
         return $this->hasMany(Category::class, 'parent_id');
     }
 
+    // Relacion de uno a muchos
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    /* los query scopes facilita la creación de consultas SQL complejas que en algunos casos se pueden volver a aplicar la misma condición a otros modelos dentro de tu aplicación
+
+    Para definir y usar correctamente los query scope, debemos seguir algunas reglas:
+
+    Todos los scopes deben recibir la variable $query.
+    Todos los nombres de los scopes deben comenzar con la palabra scope seguido del nombre que queremos llamarlo.
+    */
+
+    // Scopes
+    public function scopeActive($query)
+    {
+        return $query->where('active', true);
+    }
+
+    // URL amigable
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
 }

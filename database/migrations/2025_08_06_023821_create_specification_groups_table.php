@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('frequent_questions', function (Blueprint $table) {
+        Schema::create('specification_groups', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('section_question_id');
             $table->string('name');
-            $table->text('description');
+            $table->string('description')->nullable();
             $table->smallInteger('position')->default(0);
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('section_question_id')->references('id')->on('section_questions');
         });
     }
 
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('frequent_questions');
+        Schema::dropIfExists('specification_groups');
     }
 };
