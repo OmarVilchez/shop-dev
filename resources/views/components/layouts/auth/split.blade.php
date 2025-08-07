@@ -3,7 +3,7 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-white antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
+    <body class="min-h-screen bg-white antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900 pt-[95px] xl:pt-[130px]">
 
         <x-layouts.app.header :title="$title ?? null" />
 
@@ -11,8 +11,9 @@
             <div class="bg-muted relative hidden h-full flex-col p-10 text-white lg:flex dark:border-e dark:border-neutral-800">
                 <div class="absolute inset-0 bg-neutral-900"></div>
                 <a href="{{ route('home') }}" class="relative z-20 flex items-center text-lg font-medium" wire:navigate>
-                    <span class="flex h-10 w-10 items-center justify-center rounded-md">
-                        <x-app-logo-icon class="me-2 h-7 fill-current text-white" />
+                    <span class="flex h-10 w-64 items-center justify-center rounded-md">
+                       {{--  <x-app-logo-icon class="me-2 h-7 fill-current text-white" /> --}}
+                        aqui va una imagen
                     </span>
                     {{-- {{ config('app.name', 'Laravel') }} --}}
                 </a>

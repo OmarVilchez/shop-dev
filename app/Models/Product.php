@@ -40,6 +40,11 @@ class Product extends Model
         return $this->hasMany(StockKeepingUnit::class);
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
     // Relacion muchos a muchos
     public function collection()
     {
