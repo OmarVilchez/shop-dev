@@ -3,6 +3,8 @@
     <div class="flex bg-black/60">
         <div class="container-app flex flex-col flex-1 sm:px-6 py-12 mx-auto ">
             <div class="flex-1 lg:flex lg:items-center lg:-mx-6">
+
+
                 <div class="text-white lg:w-1/2 lg:mx-6">
                     <h1 class="text-2xl font-semibold capitalize lg:text-3xl">Contáctanos</h1>
 
@@ -76,12 +78,7 @@
 
                             <a class="mx-1.5 text-white transition-colors duration-300 transform hover:text-blue-500 flex items-center"
                                 href="#">
-                              {{--  <svg class="w-10 h-10 fill-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M18.6668 6.67334C18.0002 7.00001 17.3468 7.13268 16.6668 7.33334C15.9195 6.49001 14.8115 6.44334 13.7468 6.84201C12.6822 7.24068 11.9848 8.21534 12.0002 9.33334V10C9.83683 10.0553 7.91016 9.07001 6.66683 7.33334C6.66683 7.33334 3.87883 12.2887 9.3335 14.6667C8.0855 15.498 6.84083 16.0587 5.3335 16C7.53883 17.202 9.94216 17.6153 12.0228 17.0113C14.4095 16.318 16.3708 14.5293 17.1235 11.85C17.348 11.0351 17.4595 10.1932 17.4548 9.34801C17.4535 9.18201 18.4615 7.50001 18.6668 6.67268V6.67334Z" />
-                                </svg> --}}
-
-                               <svg class="w-5 h-5 fill-current" fill="none"  viewBox="0 0 512 512"  xmlns="http://www.w3.org/2000/svg">
+                                <svg class="w-5 h-5 fill-current" fill="none"  viewBox="0 0 512 512"  xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M412.19,118.66a109.27,109.27,0,0,1-9.45-5.5,132.87,132.87,0,0,1-24.27-20.62c-18.1-20.71-24.86-41.72-27.35-56.43h.1C349.14,23.9,350,16,350.13,16H267.69V334.78c0,4.28,0,8.51-.18,12.69,0,.52-.05,1-.08,1.56,0,.23,0,.47-.05.71,0,.06,0,.12,0,.18a70,70,0,0,1-35.22,55.56,68.8,68.8,0,0,1-34.11,9c-38.41,0-69.54-31.32-69.54-70s31.13-70,69.54-70a68.9,68.9,0,0,1,21.41,3.39l.1-83.94a153.14,153.14,0,0,0-118,34.52,161.79,161.79,0,0,0-35.3,43.53c-3.48,6-16.61,30.11-18.2,69.24-1,22.21,5.67,45.22,8.85,54.73v.2c2,5.6,9.75,24.71,22.38,40.82A167.53,167.53,0,0,0,115,470.66v-.2l.2.2C155.11,497.78,199.36,496,199.36,496c7.66-.31,33.32,0,62.46-13.81,32.32-15.31,50.72-38.12,50.72-38.12a158.46,158.46,0,0,0,27.64-45.93c7.46-19.61,9.95-43.13,9.95-52.53V176.49c1,.6,14.32,9.41,14.32,9.41s19.19,12.3,49.13,20.31c21.48,5.7,50.42,6.9,50.42,6.9V131.27C453.86,132.37,433.27,129.17,412.19,118.66Z" />
                                 </svg>
@@ -103,49 +100,179 @@
                     </div>
                 </div>
 
+                <!--Formulario -->
                 <div class="mt-8 lg:w-1/2 lg:mx-6">
                     <div
                         class="w-full px-8 py-10 mx-auto overflow-hidden bg-white shadow-2xl rounded-xl dark:bg-black lg:max-w-xl">
-                        <h1 class="text-xl font-medium text-gray-700 dark:text-gray-200"> Formulario de Contacto </h1>
-
+                        <h2 class="text-xl font-medium text-gray-700 dark:text-gray-200"> Formulario de Contacto </h2>
                         <p class="mt-2 text-gray-500 dark:text-gray-400">
                            Completa el siguiente formulario y nos pondremos en contacto contigo tan pronto como podrámos.
                         </p>
-
-                        <form class="mt-6">
+                        <form wire:submit.prevent="store" action="/contact" method="POST" class="mt-6">
                             <div class="flex-1">
                                 <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Nombre Completo</label>
-                                <input type="text" placeholder="John Doe"
+                                <input type="text" wire:model.defer="name"  name="name" required
+                                    id="contact-name" placeholder="John Doe"
                                     class="block w-full px-5 py-3 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-black dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" />
+                                    @error('name')
+                                        <span class="error">*{{ $message }}</span>
+                                    @enderror
                             </div>
+                            <div class=" grid grid-cols-12 gap-x-6">
+                                <div class="col-span-7 mt-6">
+                                    <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Correo Electrónico</label>
+                                    <input type="email" wire:model.defer="email"  name="email" required
+                                        id="email" placeholder="johndoe@example.com"
+                                        class="block w-full px-5 py-3 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-black dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" />
+                                        @error('email')
+                                            <span class="error">*{{ $message }}</span>
+                                        @enderror
+                                </div>
+                                <div class="col-span-5 mt-6">
+                                    <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Numero de Teléfono</label>
+                                    <input type="number" wire:model.defer="phone_number"  name="phone_number" id="phone_number" required  placeholder="+51 987654321"
+                                        class="block w-full px-5 py-3 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-black dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" />
 
-                            <div class="flex-1 mt-6">
-                                <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Correo Electrónico</label>
-                                <input type="email" placeholder="johndoe@example.com"
+                                        @error('phone_number')
+                                        <span class="error">*{{ $message }}</span>
+                                        @enderror
+                                </div>
+                            </div>
+                           <div class="flex-1 mt-6">
+                                <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Motivo</label>
+                                <input type="text" wire:model.defer="subject"  name="subject" id="subject" required  placeholder="Productos Corporativos"
                                     class="block w-full px-5 py-3 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-black dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" />
+                                @error('subject')
+                                <span class="error">*{{ $message }}</span>
+                                @enderror
                             </div>
-
-                            <div class="flex-1 mt-6">
-                                <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Numero de Teléfono</label>
-                                <input type="number" placeholder="+51 987654321"
-                                    class="block w-full px-5 py-3 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-black dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" />
-                            </div>
-
                             <div class="w-full mt-6">
                                 <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Mensaje</label>
-                                <textarea
+                                <textarea  wire:model.defer="contact_message"  name="message" id="contact-message" required
                                     class="block w-full h-36 px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md md:h-36 dark:bg-black dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
                                     placeholder="mensaje"></textarea>
+                                    @error('contact_message')
+                                      <span class="error">*{{ $message }}</span>
+                                    @enderror
                             </div>
 
-                            <button
+                            {{-- <button
                                 class="w-full px-6 py-3 mt-6 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-50">
                                 Enviar
+                            </button> --}}
+
+                            <button type="submit" wire:loading.attr="disabled"
+                                class="mt-4 w-full px-4 py-1.5 cursor-pointer text-white font-medium bg-theme-white border-1 border-gray-300 hover:text-theme-white hover:border-theme-purple hover:bg-theme-purple active:bg-theme-purple rounded-lg duration-150">
+                                <svg wire:loading wire:target="store" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                                <!-- Texto normal (visible solo cuando NO está cargando) -->
+                                <span wire:loading.remove wire:target="store">Enviar</span>
+                                <!-- Texto alternativo mientras carga -->
+                                <span wire:loading wire:target="store">Enviando Formulario...</span>
                             </button>
+                            <input type="hidden" name="recaptcha_token" id="recaptcha_token" wire:model="recaptcha_token">
                         </form>
+
+
+                        <!-- Modal Background -->
+                        <div x-data="{ open: @entangle('showConfirmModal') }" x-init="$watch('open')" x-show="open" style="display: none" class="fixed inset-0 flex items-center justify-center z-50">
+                            <!-- Fondo oscurecido -->
+                            <div class="fixed inset-0 bg-black/50"></div>
+
+                            <!-- Contenedor del modal -->
+                            <div class="relative mx-auto p-4 border w-120 shadow-lg rounded-md bg-white z-10">
+                                <div class="mt-3 text-center">
+                                    <!-- Icono círculo azul -->
+                                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-[#232BBF]">
+                                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+
+                                    <!-- Título -->
+                                    <h3 class="text-lg leading-6 font-medium mt-2 text-gray-900">Sent!</h3>
+
+                                    <!-- Mensaje -->
+                                    <div class="mt-2 px-7 py-3">
+                                        <p class="text-sm text-gray-500">Your request has been submitted successfully.</p>
+                                        <p class="text-sm text-gray-500">Our team will contact you shortly.</p>
+                                        <p class="italic text-xs text-gray-500 mt-4">📩 Check your inbox: A copy of your request has been
+                                            emailed to you.</p>
+                                    </div>
+
+                                    <!-- Botón -->
+                                    <div class="items-center px-4 py-3">
+                                       <button type="button" wire:click="$set('showConfirmModal', false)"
+                                            class="inline-flex items-center text-sm font-semibold bg-gradient-to-l from-[#232BBF] to-[#2E39FF] py-2 px-12 rounded-full focus:ring-blue-700 focus:ring-2 focus:outline-none hover:cursor-pointer hover:opacity-90">
+                                            OK
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        {{-- <flux:modal wire:model.self="showConfirmModal">
+                                <div class="relative mx-auto p-4 border w-120 shadow-lg rounded-md bg-white">
+                                    <div class="mt-3 text-center">
+                                        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-[#232BBF]">
+                                            <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                                xmlnx="http://www.w.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                        <h3 class="text-lg leading-6 font-medium mt-2 text-gray-900">Sent!</h3>
+                                        <div class="mt-2 px-7 py-3">
+                                            <p class="text-sm text-gray-500">Your request has been submitted successfully.</p>
+                                            <p class="text-sm text-gray-500">Our team will contact you shortly.</p>
+                                            <p class=" italic text-xs text-gray-500 mt-4 ">📩 Check your inbox: A copy of your request has been
+                                                emailed to you.</p>
+                                        </div>
+                                        <div class="items-center px-4 py-3 ">
+                                            <flux:modal.close>
+                                                <button type="button"
+                                                    class="inline-flex items-center text-sm font-semibold bg-gradient-to-l from-[#232BBF] to-[#2E39FF] py-2 px-12 rounded-full focus:ring-blue-700 focus:ring-2 focus:outline-none hover:cursor-pointer hover:opacity-90">
+                                                    OK
+                                                </button>
+                                            </flux:modal.close>
+                                        </div>
+                                    </div>
+                                </div>
+                            </flux:modal> --}}
+
+
+                          <script src="https://www.google.com/recaptcha/api.js?render={{ env('RECAPTCHA_SITE_KEY') }}"></script>
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function() {
+                                    grecaptcha.ready(function() {
+                                        grecaptcha.execute("{{ env('RECAPTCHA_SITE_KEY') }}", {
+                                                action: "submit"
+                                            })
+                                            .then(function(token) {
+                                                /*    console.log("reCAPTCHA token generado:", token); */
+                                                document.getElementById("recaptcha_token").value = token;
+                                                @this.set('recaptcha_token', token); // <-- Asignar el token a Livewire
+                                            }).catch(function(error) {
+                                                /*   console.error("Error al generar el token de reCAPTCHA:", error); */
+                                            });
+                                    });
+                                });
+                            </script>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    @include('components.flash-messages')
+
 </section>

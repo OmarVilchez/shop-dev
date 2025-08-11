@@ -187,11 +187,13 @@
     }
 
 
+    /********************************** FRONTEND ********************************************************************/
+
+
      /* Tamaño de pantalla */
     .container-app{
         @apply max-w-[90%] mx-auto;
     }
-
 
 
     /* ANIMACION NRO 1 */
@@ -223,7 +225,7 @@
         animation: marquee-reverse 50s linear infinite;
     }
 
-  /*   .animate-marquee-vertical {
+    /*   .animate-marquee-vertical {
         animation: marquee-vertical 25s linear infinite;
     } */
 
@@ -270,23 +272,24 @@
     }
 
 
-
-        /* ANIMACION NRO 2 */
-        @keyframes marquee2 {
-            0% {
-                transform: translate3d(var(--move-initial), 0, 0);
-            }
-
-            100% {
-                transform: translate3d(var(--move-final), 0, 0);
-            }
+    /* ANIMACION NRO 2 */
+    @keyframes marquee2 {
+        0% {
+            transform: translate3d(var(--move-initial), 0, 0);
         }
 
-        .animate-marquee {
-            animation: marquee2 15s linear infinite;
+        100% {
+            transform: translate3d(var(--move-final), 0, 0);
         }
+    }
 
+    .animate-marquee {
+        animation: marquee2 15s linear infinite;
+    }
 
+    .error {
+        @apply text-xs text-red-500 italic;
+    }
 
 }
 
@@ -304,6 +307,11 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
+/* @layer utilities {
+    [x-cloak] {
+        display: none !important;
+    }
+} */
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
