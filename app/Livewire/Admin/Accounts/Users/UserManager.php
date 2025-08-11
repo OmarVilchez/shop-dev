@@ -28,6 +28,7 @@ class UserManager extends Component
 
     public $sortField = '';
     public $sortDirection = '';
+    public $filterActive = '';
 
     public $showModalOpen = false;
 
@@ -114,7 +115,12 @@ class UserManager extends Component
         ])->save();
 
         //Asignación de rol
-        $user->syncRoles($this->role_id);
+        /*  $user->syncRoles($this->role_id); */
+        $roleName = Role::find($this->role_id)?->name;
+
+        if ($roleName) {
+            $user->syncRoles($roleName);
+        }
 
         $this->showModalOpen = false;
 
@@ -170,6 +176,11 @@ class UserManager extends Component
         $this->resetPage();
     }
 
+    public function updatedFilterActive()
+    {
+        $this->resetPage();
+    }
+
     public function toggleActive($id)
     {
         $user = User::findOrFail($id);
@@ -190,6 +201,10 @@ class UserManager extends Component
 
         if (!empty($this->sortField)) {
             $usersManagerQuery->orderBy($this->sortField, $this->sortDirection);
+        }
+
+        if ($this->filterActive !== '') {
+            $usersManagerQuery = $usersManagerQuery->where('active', $this->filterActive);
         }
 
         $users = $usersManagerQuery->whereHas('roles')->paginate(10);

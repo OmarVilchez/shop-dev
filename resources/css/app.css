@@ -46,9 +46,14 @@
         border-color: var(--color-gray-200, currentColor);
     }
 
+    /* Breadcrumbs admin */
+    .breadcrumbs-admin{
+        @apply px-6 py-2 sm:p-6;
+    }
+
     /* Contenedor general de secciones admin */
     .admin-section {
-        @apply p-4 sm:p-6 space-y-6 ;
+        @apply px-4 py-2 sm:px-6 sm:py-4 space-y-6 ;
     }
 
     /* Encabezado con título y botón */
@@ -112,7 +117,7 @@
     }
 
     .admin-switch {
-        @apply relative inline-flex items-center h-6 w-11 rounded-full transition-colors focus:outline-none;
+        @apply relative inline-flex items-center h-6 w-11 rounded-full transition-colors focus:outline-none cursor-pointer;
     }
 
     .admin-switch-thumb {

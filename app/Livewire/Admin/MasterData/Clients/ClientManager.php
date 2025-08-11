@@ -55,7 +55,6 @@ class ClientManager extends Component
             $ClientQuery = $ClientQuery->where('active', $this->filterActive);
         }
 
-
         if (!empty($this->sortField)) {
             $ClientQuery = $ClientQuery->orderBy($this->sortField, $this->sortDirection);
         }

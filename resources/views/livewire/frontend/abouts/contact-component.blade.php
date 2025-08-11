@@ -7,7 +7,7 @@
                     <h1 class="text-2xl font-semibold capitalize lg:text-3xl">Contáctanos</h1>
 
                     <p class="max-w-xl mt-6">
-                        Si tienes alguna consulta escríbenos a volkan@gmail.com o déjanos un mensaje usando nuestro formulario, en breve
+                        Si tienes alguna consulta escríbenos a fluye@gmail.com o déjanos un mensaje usando nuestro formulario, en breve
                         te responderemos.
                     </p>
 

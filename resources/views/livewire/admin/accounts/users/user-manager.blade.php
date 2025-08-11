@@ -3,7 +3,7 @@
      {{ __('Gestor de Usuarios') }}
     @endsection
 
-    <flux:breadcrumbs class="p-6">
+    <flux:breadcrumbs class="breadcrumbs-admin">
         <flux:breadcrumbs.item :href="route('manager.dashboard')">
             {{ __('Dashboard') }}
         </flux:breadcrumbs.item>
@@ -23,7 +23,12 @@
 
         <!-- Filtros -->
         <div class="admin-filters">
-            <flux:input type="text" wire:model.live="search" placeholder="Buscar..." class="w-full sm:max-w-lg" />
+            <flux:input type="text" wire:model.live="search" placeholder="Buscar..." class="admin-filter-input" />
+             <flux:select id="filterActive" wire:model.live="filterActive" class="admin-filter-select">
+                <option value="">Todos los estados</option>
+                <option value="1">Activos</option>
+                <option value="0">Inactivos</option>
+            </flux:select>
         </div>
 
         <!-- Tabla -->

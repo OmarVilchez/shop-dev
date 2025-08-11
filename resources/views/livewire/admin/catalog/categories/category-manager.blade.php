@@ -3,7 +3,7 @@
         {{ __('Gestor de Categorias') }}
     @endsection
 
-    <flux:breadcrumbs class="p-6">
+    <flux:breadcrumbs class="breadcrumbs-admin">
         <flux:breadcrumbs.item :href="route('manager.dashboard')">
             {{ __('Dashboard') }}
         </flux:breadcrumbs.item>
@@ -103,8 +103,8 @@
                     @empty
                         <tr>
                             <td colspan="7">
-                                <div class="flex items-center justify-center">
-                                    <span class="py-3 text-sm font-medium text-theme-gray">{{ __('No se ha encontrado ninguna categoría')}}</span>
+                                <div class="admin-result-null">
+                                    <span class="admin-result-text">{{ __('No se ha encontrado ninguna categoría')}}</span>
                                 </div>
                             </td>
                         </tr>

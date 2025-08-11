@@ -46,7 +46,7 @@
         </div>
         <hr class="my-6 border-[#2E39FF] opacity-25  sm:mx-auto lg:my-4" />
         <span class="block text-sm text-gray-500 text-center dark:text-gray-400 md:pb-6">Copyright © {{ now()->year }}
-            VOLKAN – RUC:20602456537 | Elaborado por
+            FLUYE – RUC:20602456537 | Elaborado por
         </span>
     </div>
 </flux:footer>
@@ -219,7 +219,7 @@
         <!-- Línea divisoria y copyright -->
         {{-- <hr class="my-6 border-white sm:mx-auto lg:my-8" /> --}}
         <div class="text-center text-xs text-white mt-6 lg:mt-16 border-hidden sm:border border-white">
-            Copyright© 2025 VOLKAN | Elaborado por VOLKAN
+            Copyright© 2025 FLUYE | Elaborado por FLUYE
         </div>
     </div>
 
