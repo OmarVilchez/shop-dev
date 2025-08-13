@@ -20,8 +20,6 @@ return new class extends Migration
             $table->boolean('active')->default(true);
             $table->timestamp('subscribed_at')->nullable();
             $table->timestamps();
-
-
         });
     }
 

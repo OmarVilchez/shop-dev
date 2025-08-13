@@ -12,9 +12,12 @@ class Subscription extends Model
     protected $guarded = ['id'];
 
     protected $casts = [
+        'data' => 'array',
+        'data_sync' => 'array',
+        'active' => 'boolean',
+        'subscribed_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'active' => 'boolean',
     ];
 
     protected function data(): Attribute
