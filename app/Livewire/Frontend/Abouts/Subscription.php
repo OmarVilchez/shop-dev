@@ -3,7 +3,8 @@
 namespace App\Livewire\Frontend\Abouts;
 
 use App\Helpers\Flash;
-use App\Jobs\SyncBrevoJob;
+use App\Jobs\CreateContactSyncBrevoJob;
+use App\Jobs\SendEmailSubscriptionJob;
 use App\Models\Subscription as ModelsSubscription;
 use Carbon\Carbon;
 use Livewire\Component;
@@ -40,9 +41,12 @@ class Subscription extends Component
 
 
         //Invoca al job para crear el contacto en Brevo.
-        SyncBrevoJob::dispatch($subscriber);
+        CreateContactSyncBrevoJob::dispatch($subscriber);
 
-        // Envio de correo de suscription exitosa
+        // Envia el correo de suscripción usando una plantilla de Brevo.
+        SendEmailSubscriptionJob::dispatch($subscriber);
+
+        // Envio de correo de suscription exitosa - Correo Manual
        // $subscriptionMail = new SubscriptionMail($subscriber);
        // Mail::to($subscriber->email)->bcc($this->email_contact)->queue($subscriptionMail);
 

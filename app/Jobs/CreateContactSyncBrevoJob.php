@@ -16,7 +16,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class SyncBrevoJob implements ShouldQueue
+class CreateContactSyncBrevoJob implements ShouldQueue
 {
     //use Queueable;
 
@@ -47,7 +47,7 @@ class SyncBrevoJob implements ShouldQueue
         $emailBlacklisted = $smsBlacklisted = $subscriber->active ? false : true;
 
         // Identificador de la lista donde se guardará el contacto.
-        $listIds = [1];
+        $listIds = [2];
 
         $date = Carbon::now()->format('Y-m-d H:i:s');
 

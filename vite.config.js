@@ -15,9 +15,9 @@ export default defineConfig({
     server: {
         //cors: true,
         host: 'shop-dev.test', // <- tu dominio local personalizado
-        port: 5173,            // <- el puerto por defecto de Vite
+        port: 5174,            // <- el puerto por defecto de Vite
         https: false,           // <- si no usas HTTPS localmente
-        origin: 'http://shop-dev.test:5173', // <- 👈 clave para evitar errores de origen
+        origin: 'http://shop-dev.test:5174', // <- 👈 clave para evitar errores de origen
         cors: true,
     },
 });

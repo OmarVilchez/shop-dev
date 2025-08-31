@@ -21,7 +21,7 @@
                     :aria-hidden="current !== index">
                     <picture>
                         <source :srcset="banner.img_mobile" media="(max-width: 768px)">
-                        <img :src="banner.img_desktop" alt="" class="w-full object-contain" loading="lazy"
+                        <img :src="banner.img_desktop" alt="" class="object-contain" style="width: 100%;" loading="lazy"
                             @load="$el.parentElement.parentElement.classList.remove('hidden')">
                     </picture>
                     <div class="absolute left-8 bottom-8 bg-black/40 flex items-center justify-center text-center text-white p-4">
