@@ -23,6 +23,9 @@
     <!-- Alertify CSS -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/alertify/alertify.min.css') }}?v={{ time() }}">
 
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fluxAppearance
 
@@ -189,6 +192,13 @@
 
     <!-- Alertify JS -->
     <script src="{{ asset('assets/js/alertify/alertify.min.js') }}?v={{ time() }}"></script>
+
+    <!-- Livewire Sortable JS -->
+    <script src="https://cdn.jsdelivr.net/gh/livewire/sortable@v1.x.x/dist/livewire-sortable.js"></script>
+
+  {{--  <script src="https://cdn.jsdelivr.net/npm/livewire-sortablejs@0.x.x/dist/livewire-sortable.min.js"></script> --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/livewire-sortablejs@0.1.1/dist/livewire-sortable.min.js"></script> --}}
+
 
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {
