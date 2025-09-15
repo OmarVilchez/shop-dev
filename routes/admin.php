@@ -17,6 +17,7 @@ use App\Livewire\Admin\Content\Quotes\QuoteManager;
 use App\Livewire\Admin\Accounts\Permissions\PermissionManager;
 use App\Livewire\Admin\Accounts\Roles\RoleManager;
 use App\Livewire\Admin\Accounts\Users\UserManager;
+use App\Livewire\Admin\Catalog\Collections\CollectionUpsert;
 use App\Livewire\Admin\Content\Banners\BannerManager;
 use App\Livewire\Admin\MasterData\Clients\ClientManager;
 use App\Livewire\Admin\MasterData\Contacts\ContactManager;
@@ -32,7 +33,11 @@ Route::get('orders', OrderManager::class)->middleware('can:listar ordenes')->nam
 
 // CATALOGOS
 Route::get('catalog/categories', CategoryManager::class)->middleware('can:listar categorias')->name('catalog.categories.index');
+
 Route::get('catalog/collections', CollectionManager::class)->middleware('can:listar colecciones')->name('catalog.collections.index');
+Route::get('catalog/collections/create', CollectionUpsert::class)->middleware('can:crear colecciones')->name('catalog.collections.create');
+
+
 Route::get('catalog/products', ProductManager::class)->middleware('can:listar productos')->name('catalog.products.index');
 Route::get('catalog/promotions', PromotionManager::class)->middleware('can:listar promociones')->name('catalog.promotions.index');
 Route::get('catalog/quantities', QuantityManager::class)->middleware('can:listar cantidades')->name('catalog.quantities.index');
