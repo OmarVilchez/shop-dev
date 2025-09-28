@@ -26,6 +26,24 @@
     --color-accent: var(--color-neutral-800);
     --color-accent-content: var(--color-neutral-800);
     --color-accent-foreground: var(--color-white);
+
+
+    /*CODIGO PARA EL NUEVO DISEÑO DE SPINNER DE CARGA */
+
+    /* Light theme */
+    --color-surface-alt: var(--color-neutral-50);
+    --color-primary: var(--color-black);
+    --color-on-primary: var(--color-neutral-100);
+
+    /* Dark theme */
+    --color-surface-dark-alt: var(--color-neutral-900);
+    --color-primary-dark: var(--color-white);
+    --color-on-primary-dark: var(--color-black);
+
+    /* Border radius */
+    --radius-radius: var(--radius-sm);
+
+    /*HASTA AQUI ES EL CODIGO ↑*/
 }
 
 @layer theme {

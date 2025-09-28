@@ -37,7 +37,11 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helpers/ImageSkuHelper.php",
+            "app/Helpers/CloudinaryHelper.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

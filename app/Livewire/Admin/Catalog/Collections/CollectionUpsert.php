@@ -26,10 +26,11 @@ class CollectionUpsert extends Component
     public $active = 1;
     public $date_from;
     public $date_to;
-
     public $thumbnailFile;
     public $desktopFile;
     public $mobileFile;
+
+    public $editorId;
 
     protected $rules = [
         'type_collection_id' => 'required|exists:type_collections,id',
@@ -47,12 +48,21 @@ class CollectionUpsert extends Component
         'date_to' => 'nullable|date|after_or_equal:date_from',
     ];
 
+    protected $listeners = [
+        'updateDescription',
+    ];
+
     public function mount($collection = null)
     {
         if ($collection) {
             $this->collection = Collection::findOrFail($collection);
             $this->fill($this->collection->toArray());
+            $this->editorId = 'jodit-editor-' . $this->collection->id;
+        } else {
+            $this->editorId = 'jodit-editor-' . uniqid();
         }
+
+        $this->dispatch('refreshJodit', $this->description);
     }
 
     public function save()
@@ -97,6 +107,10 @@ class CollectionUpsert extends Component
        // return redirect()->route('collections.index');
     }
 
+    public function updateDescription($value)
+    {
+        $this->description = $data['value'] ?? '';
+    }
 
     public function render()
     {

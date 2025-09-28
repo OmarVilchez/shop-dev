@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Admin\Panel\Dashboard;
 use App\Livewire\Admin\Panel\Orders\OrderManager;
@@ -17,7 +17,8 @@ use App\Livewire\Admin\Content\Quotes\QuoteManager;
 use App\Livewire\Admin\Accounts\Permissions\PermissionManager;
 use App\Livewire\Admin\Accounts\Roles\RoleManager;
 use App\Livewire\Admin\Accounts\Users\UserManager;
-use App\Livewire\Admin\Catalog\Collections\CollectionUpsert;
+use App\Livewire\Admin\Catalog\Collections\CollectionCreate;
+use App\Livewire\Admin\Catalog\Collections\CollectionEdit;
 use App\Livewire\Admin\Content\Banners\BannerManager;
 use App\Livewire\Admin\MasterData\Clients\ClientManager;
 use App\Livewire\Admin\MasterData\Contacts\ContactManager;
@@ -35,7 +36,8 @@ Route::get('orders', OrderManager::class)->middleware('can:listar ordenes')->nam
 Route::get('catalog/categories', CategoryManager::class)->middleware('can:listar categorias')->name('catalog.categories.index');
 
 Route::get('catalog/collections', CollectionManager::class)->middleware('can:listar colecciones')->name('catalog.collections.index');
-Route::get('catalog/collections/create', CollectionUpsert::class)->middleware('can:crear colecciones')->name('catalog.collections.create');
+Route::get('catalog/collections/create', CollectionCreate::class)->middleware('can:crear colecciones')->name('catalog.collections.create');
+Route::get('catalog/collections/{collection}/edit', CollectionEdit::class)->middleware('can:editar colecciones')->name('catalog.collections.edit');
 
 
 Route::get('catalog/products', ProductManager::class)->middleware('can:listar productos')->name('catalog.products.index');
@@ -63,7 +65,7 @@ Route::get('master/subscribers', SubscriberManager::class)->middleware('can:list
 // LOGS
 Route::get('logs', function () {})->middleware('can:listar logs')->name('logs.index');
 
-
+Route::post('/upload-image', [ImageController::class, 'uploadImage'])->name('upload.image');
 
 
 

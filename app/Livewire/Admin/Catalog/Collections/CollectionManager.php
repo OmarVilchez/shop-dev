@@ -20,7 +20,7 @@ class CollectionManager extends Component
     public $slug;
     public $description;
     public $image_mobile;
-    public $image_desktop;
+    public $img_desktop;
     public $meta_title;
     public $meta_description;
     public $keywords;
@@ -30,8 +30,6 @@ class CollectionManager extends Component
     public $time_to = '';
     public $active;
     public $validity = true;
-    public $image_desktop_upload;
-    public $image_mobile_upload;
     public $position;
     public $showModalOpen = false;
 
@@ -88,14 +86,14 @@ class CollectionManager extends Component
         $this->slug = $data->slug;
         $this->description = $data->description;
         $this->image_mobile = $data->image_mobile;
-        $this->image_desktop = $data->image_desktop;
+        $this->img_desktop = $data->img_desktop;
         $this->meta_title = $data->meta_title;
         $this->meta_description = $data->meta_description;
         $this->keywords = $data->keywords;
         $this->position = $data->position;
-        $this->date_from = $data->date_from ? $data->date_from->format('Y-m-d') : '';
+        $this->date_from = $data->date_from->format('Y-m-d') ? $data->date_from->format('Y-m-d') : '';
         $this->time_from = $data->date_from ? $data->date_from->format('H:i') : '';
-        $this->date_to = $data->date_to ? $data->date_to->format('Y-m-d') : '';
+        $this->date_to = $data->date_to->format('Y-m-d') ? $data->date_to->format('Y-m-d') : '';
         $this->time_to = $data->date_to ? $data->date_to->format('H:i') : '';
         $this->validity = (!$data->date_from && !$data->date_to);
 
@@ -144,7 +142,21 @@ class CollectionManager extends Component
 
     public function delete($id)
     {
-        Collection::findOrFail($id)->delete();
+        //borrado logico
+        //Collection::findOrFail($id)->delete();
+
+        $collection = Collection::findOrFail($id);
+
+        // Elimina las relaciones en collection_product
+        $collection->products()->detach();
+
+
+        // Elimina la colección (borrado físico si usas SoftDeletes)
+        $collection->forceDelete();
+
+        // Elimina la colección (borrado físico si no usas SoftDeletes)
+       //$collection->delete();
+
         Flux::modals()->close();
         Flash::success('Colección eliminada correctamente');
     }

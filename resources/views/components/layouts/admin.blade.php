@@ -13,6 +13,8 @@
     <title>  Manager | @yield('title')</title>
     {{-- <title>{{ $title ?? config('app.name') }}</title> --}}
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -25,6 +27,10 @@
 
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+
+    <!-- Jodit -->
+    <link rel="stylesheet" href="{{ asset('assets/jodit/jodit.min.css') }}" />
+    <script src="{{ asset('assets/jodit/jodit.min.js') }} "></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fluxAppearance
@@ -245,6 +251,8 @@
                         }
                     }
     </script>
+
+    @stack('script')
 
 </body>
 

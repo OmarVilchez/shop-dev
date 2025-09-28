@@ -17,21 +17,13 @@
         <!-- Título y botón -->
         <div class="admin-header">
             <h1 class="admin-title">Colecciones</h1>
-           {{--  <flux:button wire:click="openModal" variant="primary" color="green" class="admin-action-btn">Nueva Colección
-            </flux:button> --}}
-
             @can('crear colecciones')
-            <a href="{{ route('manager.catalog.collections.create') }}"
-                class="inline-flex justify-center rounded-md border border-transparent bg-theme-cyanblue px-4 py-2 text-xs font-semibold uppercase leading-normal text-theme-white opacity-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-transparent focus:ring-offset-2 disabled:opacity-50 hover:opacity-80 max-sm:w-full">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                    class="mr-1 h-4 w-4">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v2.25A2.25 2.25 0 006 10.5zm0 9.75h2.25A2.25 2.25 0 0010.5 18v-2.25a2.25 2.25 0 00-2.25-2.25H6a2.25 2.25 0 00-2.25 2.25V18A2.25 2.25 0 006 20.25zm9.75-9.75H18a2.25 2.25 0 002.25-2.25V6A2.25 2.25 0 0018 3.75h-2.25A2.25 2.25 0 0013.5 6v2.25a2.25 2.25 0 002.25 2.25z" />
-                </svg>
-                {{ __('Nuevo colección') }}
-            </a>
+                <a href="{{ route('manager.catalog.collections.create') }}"
+                    class="inline-flex justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-xs font-semibold uppercase leading-normal text-theme-white opacity-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-transparent focus:ring-offset-2 disabled:opacity-50 hover:opacity-80 max-sm:w-full">
+                     <flux:icon name="rectangle-stack" class="mr-1 h-4 w-4" />
+                    {{ __('Nuevo colección') }}
+                </a>
             @endcan
-
         </div>
 
         <!-- Filtros -->
@@ -78,10 +70,13 @@
                             <!-- Imagen -->
                            <td class="whitespace-nowrap mx-3 ">
                                 <div class="w-16 mx-auto  flex-shrink-0">
-                                    @if ($collection->image_desktop)
-                                    <img src="{{ Storage::url($collection->image_desktop) }} " alt="{{ $collection->name }}" class=" object-cover">
+                                    @if ($collection->img_desktop)
+                                    {{-- <img
+                                        src="{{ Str::startsWith($collection->img_desktop, 'http') ? $collection->img_desktop : Storage::url($collection->img_desktop) }} "
+                                        alt="{{ $collection->name }}" class="w-20 mx-auto object-cover rounded"> --}}
+                                        <img src="{{ cloudinaryUrl($collection->img_desktop, ['q' => 'auto', 'f' => 'auto', 'w' => 400]) }}" alt="{{ $collection->name }}" class="rounded">
                                     @else
-                                    <img src="{{ Storage::url('no-image.png') }} " alt="{{ 'no-image' }}" class="w-20 mx-auto object-cover">
+                                        <img src="{{ Storage::url('no-image.png') }} " alt="{{ 'no-image' }}" class="w-20 mx-auto object-cover">
                                     @endif
                                 </div>
                             </td>
@@ -97,9 +92,9 @@
 
                            {{--  <td class="admin-td max-w-[200px]">{{ Str::limit($collection->description, 30) }}</td> --}}
 
-                            <td class="admin-td text-center">{{ $collection->date_from ?? '-' }}</td>
+                            <td class="admin-td text-center">{{ $collection->date_from ? \Carbon\Carbon::parse($collection->date_from)->format('d-m-Y') : '-' }}</td>
 
-                            <td class="admin-td">{{ $collection->date_to ?? 'Ilimitado' }}</td>
+                            <td class="admin-td">{{ $collection->date_to ? \Carbon\Carbon::parse($collection->date_to)->format('d-m-Y') : 'Ilimitado' }}</td>
 
                             <!-- Estado switch -->
                             <td class="admin-td">
@@ -112,8 +107,6 @@
                                     </span>
                                 </div>
                             </td>
-
-
 
                             <!-- Acciones -->
                             <td class="admin-td">
@@ -129,9 +122,10 @@
                                     @endif
 
                                     @can('editar colecciones')
-                                        <button wire:click="openModal({{ $collection->id }})" class="admin-btn admin-btn-edit" title="Editar">
+                                        <a href="{{ route('manager.catalog.collections.edit', $collection) }}" title="Editar"
+                                            class="admin-btn admin-btn-edit">
                                             <flux:icon name="pencil" class="admin-icon-edit" />
-                                        </button>
+                                        </a>
                                     @endcan
 
                                     @can('eliminar colecciones')
@@ -178,17 +172,7 @@
         </div>
     </div>
 
-
-
-
-
-
-
-    </div>
-
-
-
-
+    @include('components.flash-messages')
 
 </section>
 

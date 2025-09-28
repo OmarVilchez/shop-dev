@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Collection extends Model
 {
@@ -51,6 +52,18 @@ class Collection extends Model
     public function scopeActive($query)
     {
         return $query->where('active', true);
+    }
+
+
+    protected static function booted()
+    {
+        static::creating(function ($collection) {
+            $collection->slug = Str::slug($collection->name);
+        });
+
+        static::updating(function ($collection) {
+            $collection->slug = Str::slug($collection->name);
+        });
     }
 
     // URL amigable

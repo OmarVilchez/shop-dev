@@ -20,19 +20,17 @@
                 <div>
                     <flux:label for="name">Nombre</flux:label>
                     <flux:input id="name" wire:model.defer="name" />
-                    @error('name') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                    @error('name') <span class="error">{{ $message }}</span> @enderror
                 </div>
 
                 <div>
                     <flux:label for="description">Descripción</flux:label>
                     <div class="col-span-12" wire:ignore>
-                        <div class="mt-1">
-                            <textarea id="{{ $editorId }}">{!! $description ?? '' !!}</textarea>
-                        </div>
-                        @error('description')
-                        <span class="error">*{{ $message }}</span>
-                        @enderror
+                        <textarea id="{{ $editorId }}">{!! $description ?? '' !!}</textarea>
                     </div>
+                    @error('description')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -44,7 +42,7 @@
                             <option value="{{ $type->id }}">{{ $type->name }}</option>
                             @endforeach
                         </flux:select>
-                        @error('type_collection_id') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                        @error('type_collection_id') <span class="error">{{ $message }}</span> @enderror
                     </div>
 
                     <div>
@@ -101,6 +99,7 @@
                     'id' => 'thumbnailFile',
                     // fuerza que la caja llene la fila
                     'containerClass' => 'h-full',
+                    'previewClass' => 'w-full h-full object-cover'
                     ])
                 </div>
 
@@ -120,13 +119,14 @@
                 </div>
 
                 {{-- Columna izquierda, Fila 2: Desktop --}}
-                <div class="min-h-[160px]">
+                <div class="min-h-[160px]  mt-8">
                     <flux:label>Imagen Desktop</flux:label>
                     @include('partials.upload-image', [
                     'model' => 'desktopFile',
                     'current' => $img_desktop,
                     'id' => 'desktopFile',
                     'containerClass' => 'h-full',
+                    'previewClass' => 'w-full h-full object-cover'
                     ])
                 </div>
             </div>
@@ -134,7 +134,7 @@
 
         <!-- Acciones -->
         <div class="flex justify-end gap-3 pt-4 border-t dark:border-zinc-700">
-            <flux:button type="button" color="zinc" wire:click="$emit('cancelUpsert')">
+            <flux:button type="button" color="zinc" wire:click="cancel">
                 Cancelar
             </flux:button>
             <flux:button type="submit" variant="primary">
@@ -142,9 +142,10 @@
             </flux:button>
         </div>
     </form>
+
+    @include('components.flash-messages')
+
 </div>
-
-
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
